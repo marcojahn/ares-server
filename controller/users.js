@@ -19,6 +19,10 @@ exports = module.exports = users;
 var authorize = function (checks) {
     return function (req, res, next) {
         console.log('running authorization based on checks: ' + checks);
+        if (checks.indexOf('forceFail') !== -1) {
+            console.log('Force failed');
+            res.redirect('/anonymous/login;')
+        }
         next();
     };
 };
@@ -71,4 +75,8 @@ users.post('/', function (req, res, next) {
 
         res.json(200, bestellung);
     });
+});
+
+users.delete('/:id', authorize('role:admin owner:id forceFail'), function (req, res, next) {
+    res.send(200, 'User deleted');
 });
