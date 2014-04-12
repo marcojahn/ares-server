@@ -1,0 +1,23 @@
+{
+  "name": "ares",
+  "description": "Airplane REservation System",
+  "version": "0.0.1",
+  "author": "Marco Jahn <marco.jahn@gmail.com>",
+  "contributors": [
+    {
+      "name": "Marco Jahn",
+      "email": "marco.jahn@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "express": "^4.0.0"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "repository": "",
+  "scripts": {},
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "license": "NONE"
+}
