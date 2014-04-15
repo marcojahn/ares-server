@@ -52,28 +52,57 @@ users.get('/:id', authorize('role:admin owner:id permission:read'), function (re
     });
 });
 
-users.put('/:id', function (req, res, next) {
-    res.send(200, 'User modified');
-});
-
 /* Demo data
 {
-    "surname": "Marco",
-    "lastname": "Jahn",
     "username": "marco.jahn",
     "password": "1234",
-    "email": "marco.jahn@gmail.com"
+    "email": "marco.jahn@gmail.com",
+    "firstname": "Marco",
+    "lastname": "Jahn"
 }
  */
 users.post('/', function (req, res, next) {
     var user = new User(req.body);
 
-    user.save(function (err, bestellung) {
+    user.save(function (err, user) {
         // TODO
         if (err) console.log(err);
-        if (!bestellung) console.log(new Error('Failed to save user: ' + user));
+        if (!user) console.log(new Error('Failed to save user: ' + user));
 
-        res.json(200, bestellung);
+        res.json(200, user);
+    });
+});
+
+users.put('/:id', function (req, res, next) {
+    var userId = req.params.id;
+
+    /*
+    <Model>.update -> will not (!) send the modified model back!
+    User.update({_id: userId}, req.body, function (err, numberAffected, raw) {
+        if (err) console.log(err);
+
+        res.json(200, raw);
+    });*/
+
+    /*
+    findByIdAndUpdate does not (!) trigger "pre::save" action...
+    User.findByIdAndUpdate(userId, req.body, function (err, user) {
+        if (err) console.log(err);
+        if (!user) console.log(new Error('Failed to update user: ' + user));
+
+        res.json(200, user);
+    });*/
+
+    User.findById(userId, function (err, user) {
+        // TODO
+
+        user.set(req.body);
+        user.save(function (err) {
+            if (err) console.log(err);
+            if (!user) console.log(new Error('Failed to update user: ' + user));
+
+            res.json(200, user);
+        });
     });
 });
 

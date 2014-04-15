@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     bcrypt = require('bcrypt'),
+    mongoosePluginDocumentTimestamps = require('../util/mongoose/plugins/documenttimestamps'),
     SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
@@ -10,9 +11,6 @@ var UserSchema = new Schema({
     firstname: {},
     lastname: {}
 });
-
-//UserSchema.path('email').index({unique: true, dropDups: true});
-//UserSchema.path('username').index(true);
 
 UserSchema.pre('save', function (next) {
     var user = this;
@@ -42,4 +40,5 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
+UserSchema.plugin(mongoosePluginDocumentTimestamps);
 mongoose.model('User', UserSchema);

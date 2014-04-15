@@ -1,3 +1,8 @@
+# Personal notes
+start mongod:
+
+    mongod --config /usr/local/etc/mongod.conf
+
 # NodeJS with ExpressJS 4.0 and Mongoose
 
 Project ARES (Airplane REservation System) is developed during PRODYNA PAC certification program and can be used as project template for upcoming projectsl.
@@ -8,6 +13,8 @@ Project ARES (Airplane REservation System) is developed during PRODYNA PAC certi
 ## Used Tools and Frameworks
 
 ## Setup
+Due to the [bcrypt](https://github.com/ncb000gt/node.bcrypt.js/) dependency a c/c++ compile env must be available.
+For compiling bcrypt [node-gyp](https://github.com/TooTallNate/node-gyp/) an its dependencies must be installed (good luck).
 
 # Documentation
 ## Additional Links
@@ -22,7 +29,7 @@ Project ARES (Airplane REservation System) is developed during PRODYNA PAC certi
 ## Important Files
 
 ## Security
-For security (csrf, ...) the [Helmet]() library is used.
+For security (csrf, ...) the [Helmet](https://github.com/evilpacket/helmet) library is used.
 Every HTTP method type except GET, OPTIONS, HEAD is intercepted by the middleware and a csrf token is needed.
 Every token is limited to the session.
 
@@ -47,9 +54,12 @@ Every token is limited to the session.
 ### Authentication
 
 ### Authorization
-Example "users"
+Authorization is handled as api middleware.
+Example:
 
-    users.param('id', require('../middleware/authorization').isOwner);
+    <controller>.<operation>(<String:REST>, authorize(<list>), <callback>) {});
+    users.get('/:id', authorize('role:admin owner:id permission:read'), function (req, res, next) {
+
 
 Now every request having "/:id" parameter will be checked by isOwner method and will compare if session user id equals given parameter id.
 If not a HTTP 666 (TODO) Status is sent
