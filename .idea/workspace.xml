@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89159cf5-3740-4f2e-834c-2edafe8d1fe3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="89159cf5-3740-4f2e-834c-2edafe8d1fe3" name="Default" comment="" />
     <ignored path="ares.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="node_modules/" />
@@ -420,7 +418,7 @@
       <workItem from="1397473630105" duration="2485000" />
       <workItem from="1397484216151" duration="6323000" />
       <workItem from="1397543806617" duration="2443000" />
-      <workItem from="1397550664222" duration="9275000" />
+      <workItem from="1397550664222" duration="9291000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <created>1397326011203</created>
@@ -454,11 +452,15 @@
       <created>1397576362236</created>
       <updated>1397576362236</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="workspace.xml">
+      <created>1397576377988</created>
+      <updated>1397576377988</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40261000" />
+    <option name="totallyTimeSpent" value="40277000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -532,7 +534,8 @@
     <MESSAGE value="log error if user put fails" />
     <MESSAGE value="implementing session based authentication" />
     <MESSAGE value="session delete" />
-    <option name="LAST_COMMIT_MESSAGE" value="session delete" />
+    <MESSAGE value="workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="workspace.xml" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
