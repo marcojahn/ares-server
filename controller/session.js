@@ -27,11 +27,10 @@ session.post('/', function (req, res, next) {
         if (user) {
             // handle login success
             console.log('login success');
-            res.json(200, user);
 
             // set user id to session
-            req.session.user = {id: user._id};
-            //return;
+            req.session.user = user;
+            res.json(200, user);
         }
 
         // otherwise we can determine why we failed
@@ -39,12 +38,12 @@ session.post('/', function (req, res, next) {
         switch (reason) {
             case reasons.NOT_FOUND:
             case reasons.PASSWORD_INCORRECT:
-                // note: these cases are usually treated the same - don't tell
-                // the user *why* the login failed, only that it did
+                res.json(666, {success: false, reason: 'invalid_credentials'}); // TODO
                 break;
             case reasons.MAX_ATTEMPTS:
                 // send email or otherwise notify user that account is
                 // temporarily locked
+                res.json(666, {success: false, reason: 'user_locked'}); // TODO
                 break;
         }
     });
