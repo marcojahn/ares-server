@@ -9,7 +9,7 @@ module.exports = function (app) {
     });
 
     // public / anonymous routes
-    app.use('/anonymous/session', require('../controller/session'));
+    app.use('/anonymous/sessions', require('../controller/session'));
 
     // secured routes
     app.use('/planes', require('../controller/planes'));
