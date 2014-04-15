@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express')
+User = require('../model/users');
 
 var session = express.Router();
 // http://bites.goodeggs.com/posts/export-this/
@@ -19,8 +20,34 @@ session.post('/', function (req, res, next) {
 
     console.log('authentication in progress: user {' + username + '}; password {' + password + '}');
 
-    // set user id to session
-    req.session.user = {id: 4711};
+    User.getAuthenticated(username, password, function (err, user, reason) {
+        if (err) throw err;
 
-    res.json(200, {success: true});
+        // login was successful if we have a user
+        if (user) {
+            // handle login success
+            console.log('login success');
+            res.json(200, user);
+
+            // set user id to session
+            req.session.user = {id: user._id};
+            //return;
+        }
+
+        // otherwise we can determine why we failed
+        var reasons = User.failedLogin;
+        switch (reason) {
+            case reasons.NOT_FOUND:
+            case reasons.PASSWORD_INCORRECT:
+                // note: these cases are usually treated the same - don't tell
+                // the user *why* the login failed, only that it did
+                break;
+            case reasons.MAX_ATTEMPTS:
+                // send email or otherwise notify user that account is
+                // temporarily locked
+                break;
+        }
+    });
+
+    //res.json(200, {success: true});
 });

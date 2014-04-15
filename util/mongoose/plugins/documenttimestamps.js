@@ -1,3 +1,5 @@
+var timestamps = require('../../../middleware/enrichDocument').timestamps;
+
 module.exports = function documenttimestamps (schema, options) {
     schema.add(
         {
@@ -7,7 +9,8 @@ module.exports = function documenttimestamps (schema, options) {
     );
 
     schema.pre('save', function (next) {
-        this.lastmodified = new Date;
+        //this.lastmodified = new Date;
+        timestamps(this);
         next();
     });
 };
