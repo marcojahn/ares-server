@@ -12,10 +12,17 @@ var bcrypt = require('bcrypt'),
 var UserSchema = new Schema({
     username: {type: String, required: true, index: {unique: true}},
     password: {type: String, required: true},
+    usergroup: {type: String, required: true, default: 'user'},
     email: {type: String, required: true},
-    firstname: {},
-    lastname: {}
+    firstname: String,
+    lastname: String,
+    lockUntil: Date,
+    loginAttempts: Number
 });
+
+UserSchema.path('usergroup').validate(function (value) {
+    return /admin|user/i.test(value);
+}, 'Invalid usergroup');
 
 UserSchema.virtual('isLocked').get(function() {
     // check for a future lockUntil timestamp
