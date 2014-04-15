@@ -50,3 +50,9 @@ session.post('/', function (req, res, next) {
 
     //res.json(200, {success: true});
 });
+
+session.delete('/' /*, authorization ??*/, function (req, res, next) {
+    if (req.session && req.session.user) delete req.session.user;
+    console.log('session deleted');
+    res.json(200, {success: true});
+});
