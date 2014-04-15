@@ -94,7 +94,8 @@ users.put('/:id', function (req, res, next) {
     });*/
 
     User.findById(userId, function (err, user) {
-        // TODO
+        if (err) console.log(err);
+        if (!user) console.log(new Error('Failed to update user: ' + user));
 
         user.set(req.body);
         user.save(function (err) {
