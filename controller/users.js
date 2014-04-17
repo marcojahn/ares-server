@@ -1,3 +1,10 @@
+/**
+ * @class ares.server.controller.Users
+ *
+ * Bla bla bla
+ *
+ * @author Marco Jahn <marco.jahn@prodyna.com>
+ */
 var express = require('express');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
@@ -16,10 +23,20 @@ exports = module.exports = users;
 
 //https://github.com/ForbesLindesay/connect-roles/blob/master/index.js
 //http://passportjs.org/guide/
-var authorize = function (checks) {
+/* example role:admin owner:id permission:read */
+/**
+ * @method authorize
+ * For demo purposes.
+ *
+ * @param {String} checklist
+ * @returns {Function}
+ */
+var authorize = function (checklist) {
+    var checks = checklist.split(' ');
+
     return function (req, res, next) {
-        console.log('running authorization based on checks: ' + checks);
-        if (checks.indexOf('forceFail') !== -1) {
+        console.log('running authorization based on checks: ' + checklist);
+        if (checklist.indexOf('forceFail') !== -1) {
             console.log('Force failed');
             res.redirect('/anonymous/login;')
         }
@@ -27,7 +44,13 @@ var authorize = function (checks) {
     };
 };
 
-users.get('/', function (req, res, next) {
+/**
+ * @route GET /
+ *
+ * @anonymous
+ * Sends a list of users
+ */
+users.get('/', authorize('role:admin owner:id permission:read'), function (req, res, next) {
     User.find({}, function (err, user) {
         if (err) console.log(err);
 
@@ -39,6 +62,30 @@ users.get('/', function (req, res, next) {
     });
 });
 
+/**
+ * @route GET /:id
+ * Sends a list of users.
+ *
+ *     {
+ *         success: true,
+ *         totalCount: 5,
+ *         records: [
+ *             {
+ *                 id: 1,
+ *                 username: 'foobar'
+ *             },
+ *             ...
+ *         ]
+ *     }
+ *
+ * @param {Number} id User id.
+ *
+ * @authorization {role} [name=admin] admin Authorization additional text
+ * @authorization {owner} [name=id] id Owner additional text
+ * @authorization {permission} [name=r] rw permission additional text
+ *
+ * @return {Users} List of users.
+ */
 users.get('/:id', authorize('role:admin owner:id permission:read'), function (req, res, next) {
     //res.send(200, 'get user by id: ' + req.params.id);
     var id = req.params.id;
