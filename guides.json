@@ -1,0 +1,19 @@
+[
+    {
+        "title": "Ares Development Guides",
+        "items": [
+            {
+                "name": "getting_started",
+                "url": "guides/getting_started",
+                "title": "Getting Started with Ext JS 4",
+                "description": "This introduction to Ext JS 4 explains how you can get started."
+            },
+            {
+                "name": "class_system",
+                "url": "guides/class_system",
+                "title": "The Class System",
+                "description": "Creating classes with the new class system in Ext JS 4.x."
+            }
+        ]
+    }
+]

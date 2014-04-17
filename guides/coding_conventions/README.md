@@ -1,0 +1,3 @@
+# ARES Coding Conventions
+
+A guide about blah blah blah...
