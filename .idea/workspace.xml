@@ -4,7 +4,6 @@
     <list default="true" id="89159cf5-3740-4f2e-834c-2edafe8d1fe3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/middleware/authentication.js" afterPath="$PROJECT_DIR$/middleware/authentication.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/session.js" afterPath="$PROJECT_DIR$/controller/session.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ares.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -592,7 +591,7 @@
       <workItem from="1397473630105" duration="2485000" />
       <workItem from="1397484216151" duration="6323000" />
       <workItem from="1397543806617" duration="2443000" />
-      <workItem from="1397550664222" duration="28187000" />
+      <workItem from="1397550664222" duration="28207000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <created>1397326011203</created>
@@ -638,7 +637,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59173000" />
+    <option name="totallyTimeSpent" value="59193000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">

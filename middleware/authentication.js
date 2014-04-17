@@ -1,3 +1,17 @@
+/**
+ * @class ares.server.middleware.Authentication
+ *
+ * Bla bla bla
+ *
+ * @author Marco Jahn <marco.jahn@prodyna.com>
+ */
+
+/**
+ * Method auth... bla
+ * @param {Object} req request object.
+ * @param res
+ * @param next
+ */
 exports.auth = function (req, res, next) {
     if (req.originalUrl.indexOf('/anonymous') === 0) {
         console.log('auth middleware :: unsecured service');

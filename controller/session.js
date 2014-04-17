@@ -1,3 +1,11 @@
+/**
+ * @class ares.server.controller.Session
+ *
+ * Bla bla bla
+ *
+ * @author Marco Jahn <marco.jahn@prodyna.com>
+ */
+
 var express = require('express')
 User = require('../model/users');
 
@@ -5,11 +13,21 @@ var session = express.Router();
 // http://bites.goodeggs.com/posts/export-this/
 exports = module.exports = session;
 
+/**
+ * @route GET /
+ * @anonymous
+ * Standard route returns x.
+ */
 session.get('/', function (req, res, next) {
     // TODO
     res.send('400', 'METHOD NOT ALLOWED');
 });
 
+/**
+ * @route GET /csrftoken
+ * @anonymous
+ * Sends session csrf token.
+ */
 session.get('/csrftoken', function (req, res, next) {
     res.json(200, {csrftoken: req.csrfToken()});
 });
