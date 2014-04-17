@@ -1,18 +1,35 @@
 [
     {
-        "title": "Ares Development Guides",
+        "title": "ARES Development Guides",
         "items": [
             {
                 "name": "getting_started",
                 "url": "guides/getting_started",
-                "title": "Getting Started with Ext JS 4",
-                "description": "This introduction to Ext JS 4 explains how you can get started."
+                "title": "Getting started",
+                "description": "Getting started with ARES development."
             },
             {
-                "name": "class_system",
-                "url": "guides/class_system",
-                "title": "The Class System",
-                "description": "Creating classes with the new class system in Ext JS 4.x."
+                "name": "coding_conventions",
+                "url": "guides/coding_conventions",
+                "title": "Coding Conventions",
+                "description": "ARES Coding Conventions"
+            },
+            {
+                "name": "server_architecture",
+                "url": "guides/server_architecture",
+                "title": "Server Architecture",
+                "description": "ARES Server Architecture"
+            }
+        ]
+    },
+    {
+        "title": "Howtos",
+        "items": [
+            {
+                "name": "howto_1",
+                "url": "guides/howtos/howto_1",
+                "title": "Howto 1",
+                "Description": "Howto 1"
             }
         ]
     }
