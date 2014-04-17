@@ -1,5 +1,13 @@
 # ARES Coding Conventions
 
+## Language
+The overall project language will be american englisch (en-us).
+
+These rule applies to
+    - domain specific wording
+    - API Doc
+    - Documentation and guides
+
 ## Clean code
 
 TODO example
