@@ -94,7 +94,7 @@ The API Doc is generated using JSDuck.
 
 Create custom API Doc including guides and custom tags
 
-    jsduck --builtin-classes --tags jsducktags/ --guides guides.json <src_dir> --output <output_dir>
+    jsduck --builtin-classes --welcome docs/welcome/ares-welcome.html --tags docs/jsducktags/ --guides docs/guides.json <src_dir(s)> --output <output_dir>
 
 API Doc generation is triggered automatically by the following build actions
 - Grunt build process (dev + prod)
