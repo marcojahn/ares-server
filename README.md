@@ -5,7 +5,7 @@ start mongod:
 
 running jsduck with custom tags
 
-    clear && jsduck --builtin-classes --tags jsducktags/ --guides guides.json controller/ middleware/ --output build/docs
+    clear && jsduck --builtin-classes --welcome docs/welcome/ares-welcome.html --tags docs/jsducktags/ --guides docs/guides.json controller/ middleware/ --output build/docs
 
 # NodeJS with ExpressJS 4.0 and Mongoose
 
