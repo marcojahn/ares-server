@@ -47,6 +47,8 @@ var authorize = function (checklist) {
 /**
  * @route GET /
  *
+ * @facepalm
+ *
  * @anonymous
  * Sends a list of users
  */
