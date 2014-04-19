@@ -15,6 +15,16 @@
 - httpd server
     - Apache or NGinx
 
+### Windows
+ARES developers using Windows must install additional software to resolve and compile NPM dependencies.
+
+- Visual Studio Express Desktop Edition
+- OpenSSL Binary and Sourcecode
+
+Alternativelly developers using Windows can use a virtual machine image for developing ARES.
+
+An [ARES Vagrant Box](https://github.com/marcojahn/ares-vagrant.git) can be optained from the github project.
+
 ## Version control
 
 Github is used for version control.
@@ -37,8 +47,6 @@ TODO server configuration / proxy
     git clone https://github.com/marcojahn/ares-client.git
 
 ## Setup and run ARES server
-
-TODO Windows fu... (visual studio express, ...)
 
 1. Switch to your git checkout directory
 2. Resolve dependencies (initial or on package.json changes)

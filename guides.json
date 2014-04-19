@@ -19,6 +19,12 @@
                 "url": "guides/server_architecture",
                 "title": "Server Architecture",
                 "description": "ARES Server Architecture"
+            },
+            {
+                "name": "git_and_github",
+                "url": "guides/git_and_github",
+                "title": "Git & Github",
+                "description": "Using GIT and Github"
             }
         ]
     },
@@ -29,7 +35,19 @@
                 "name": "howto_1",
                 "url": "guides/howtos/howto_1",
                 "title": "Howto 1",
-                "Description": "Howto 1"
+                "description": "Howto 1"
+            },
+            {
+                "name": "using_async",
+                "url": "guides/howtos/using_async",
+                "title": "Using async",
+                "description": "Using the async library to streamline callback hierarchy."
+            },
+            {
+                "name": "unit_testing",
+                "url": "guides/howtos/unit_testing",
+                "title": "Unit testing",
+                "description": "Using Mocha and SinonJS for unit testing your server side code."
             }
         ]
     }
