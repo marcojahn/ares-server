@@ -5,9 +5,9 @@
  *
  * @author Marco Jahn <marco.jahn@prodyna.com>
  */
-var express = require('express');
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
+var express = require('express'),
+    mongoose = require('mongoose'),
+    User = mongoose.model('User');
 
 var users = express.Router();
 // http://bites.goodeggs.com/posts/export-this/
