@@ -68,6 +68,12 @@
                 "description": "Using Mocha and SinonJS for unit testing your server side code."
             },
             {
+                "name": "dependencies",
+                "url": "guides/howtos/dependencies",
+                "title": "Dependencies",
+                "description": "Managing and handling dependencies"
+            },
+            {
                 "name": "authorization",
                 "url": "guides/howtos/authorization",
                 "title": "TBD authorization",
