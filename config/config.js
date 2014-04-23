@@ -4,6 +4,9 @@ var config = {
         port: 8080,
         db: 'mongodb://localhost/ares',
         env: 'development',
+        excludes: [
+            '/monitoring'
+        ],
         init: function () {
             process.env.DEBUG = '*';
             return this;

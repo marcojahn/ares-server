@@ -4,19 +4,20 @@ var app = express();
 var mongoose = require('mongoose');
 var fs = require('fs');
 
+// TODO refactor
+// bootstrap db connection
+mongoose.connect(config.db);
+// bootstrap models
+var models_path = __dirname + '/model';
+fs.readdirSync(models_path).forEach(function (file) {
+    require(models_path + '/' + file)
+});
+
 // configuration
 require('./config/express')(app, config);
 
-// TODO refactor
-        // bootstrap db connection
-    mongoose.connect(config.db);
-    // bootstrap models
-    var models_path = __dirname + '/model';
-    fs.readdirSync(models_path).forEach(function (file) {
-        require(models_path + '/' + file)
-    });
-
 // load routes
 require('./config/routes')(app);
+
 
 app.listen(config.port);

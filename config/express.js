@@ -6,7 +6,11 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var csurf = require('csurf');
 
+var monitoring = require('../middleware/monitoring');
+
 module.exports = function (app, config) {
+
+    app.use(monitoring({}, config));
 
     //app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
     app.use(morgan((config.env === 'development') ? 'dev' : 'tiny')); // log every request to the console
@@ -24,6 +28,7 @@ module.exports = function (app, config) {
     }));
 
     // if development
+    // TODO this has changed with expressjs 4; fixit
     /*app.configure('development', function () {
         app.use(express.errorHandler({
             dumpExceptions: true,
