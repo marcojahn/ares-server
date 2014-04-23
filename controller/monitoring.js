@@ -9,40 +9,23 @@
  * - deleting monitoring data for a specific resource
  * - purging the full monitoring data
  *
- * # Example dataset GET /
+ * # Monitoring document
 
     {
-        "success" : true,
-        "total" : 2,
-        "records" : [
-             "/anonymous/sessions",
-             "/users"
-        ]
+        "_id" : ObjectId("5357c8c8cd0ca5161bd743d3"),
+        "method" : "PUT",
+        "url" : "/users",
+        "parameter" : {
+            "id" : "534d4f037d586bd10b8f2424"
+        },
+        "status" : 200,
+        "duration" : 6,
+        "reason" : null,
+        "created" : ISODate("2014-04-23T14:06:00.899Z"),
+        "__v" : 0
     }
 
- * # Example grouped dataset
-
-    {
-        "success" : true,
-        "total" : 2,
-        "records" : [
-            {
-                "_id" : "/anonymous/sessions",
-                "maxDuration" : 98,
-                "total" : 7,
-                "minDuration" : 86,
-                "avgDuration" : 90.71428571428571
-            },
-            {
-                "_id" : "/users",
-                "maxDuration" : 4,
-                "total" : 4,
-                "minDuration" : 2,
-                "avgDuration" : 3
-            }
-        ]
-    }
-
+ *
  * @author Marco Jahn <marco.jahn@prodyna.com>
  */
 var express = require('express'),
@@ -64,12 +47,12 @@ var authorize = function () {
  * Returns a list of availble monitored routes.
 
     {
-        "success" : true,
-        "total" : 2,
-        "records" : [
-            "/anonymous/sessions",
-            "/users"
-        ]
+         "success" : true,
+         "total" : 2,
+         "records" : [
+             "/anonymous/sessions",
+             "/users"
+         ]
     }
 
  * @authorization {role} admin
@@ -81,7 +64,6 @@ monitoring.get('/', authorize('role:admin'), function (req, res, next) {
         // TODO
         if (err) console.log(err);
         if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
-
 
         res.json(200, {
             success: true,
@@ -103,33 +85,40 @@ monitoring.get('/', authorize('role:admin'), function (req, res, next) {
  * @authorization {role} admin
  * @not_yet_implemented
  */
+// TODO add paging
 monitoring.get('/route;path=:route(*)', authorize('role:admin'), function (req, res, next) {
-    res.json(200, req.params);
-});
+    // TODO use aggregate to get total sum
+    // req.query.limit
+    // req.query.page
+    // TODO calculate limit + page to skip
+    // http://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
 
-/**
- * @route GET /aggregate/route;path=:route(*)
- * Returns aggregated data for given route
- *
- * Example route
 
- http://localhost:8080/monitoring/aggregate/route;path=/users
-
- * @authorization {role} admin
- */
-monitoring.get('/aggregate/route;path=:route(*)', authorize('role:admin'), function (req, res, next) {
-    var match = {$match: {url: req.params.route}};
-
-    Monitoring.aggregate(
-        buildRouteAggregationPipeline(match),
+    // TODO rewrite to ASYNC parallels to collect the full recordset (2 async calls find+count)
+    Monitoring.find(
+        {url: req.params.route},
+        null,
+        {
+            skip: 0, // TODO params
+            limit: 10, // TODO params
+            sort: {
+                created: -1
+            }
+        },
         function (err, result) {
-            res.json(200, {
-                success: true,
-                total: result.length,
-                records: result
+            // TODO
+            if (err) console.log(err);
+            if (!result) console.log(new Error('Error: ' + result));
+
+            Monitoring.count({url: req.params.route}, function (err, count) {
+                res.json(200, { // TODO pagable result set!!
+                    success: true,
+                    total: count,
+                    records: result
+                });
             });
         }
-    )
+    );
 });
 
 /**
@@ -139,6 +128,27 @@ monitoring.get('/aggregate/route;path=:route(*)', authorize('role:admin'), funct
  * Example route
 
  http://localhost:8080/monitoring/aggregate
+
+ {
+     "success" : true,
+     "total" : 2,
+     "records" : [
+         {
+             "_id" : "/anonymous/sessions",
+             "maxDuration" : 98,
+             "total" : 7,
+             "minDuration" : 86,
+             "avgDuration" : 90.71428571428571
+         },
+         {
+             "_id" : "/users",
+             "maxDuration" : 4,
+             "total" : 4,
+             "minDuration" : 2,
+             "avgDuration" : 3
+         }
+     ]
+ }
 
  * @authorization {role} admin
  */
@@ -157,6 +167,39 @@ monitoring.get('/aggregate', authorize('role:admin'), function (req, res, next) 
     Monitoring.aggregate(
         buildRouteAggregationPipeline(),
         function (err, result) {
+            // TODO
+            if (err) console.log(err);
+            if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
+
+            res.json(200, {
+                success: true,
+                total: result.length,
+                records: result
+            });
+        }
+    )
+});
+
+/**
+ * @route GET /aggregate/route;path=:route(*)
+ * Returns aggregated data for given route
+ *
+ * Example route
+
+    http://localhost:8080/monitoring/aggregate/route;path=/users
+
+ * @authorization {role} admin
+ */
+monitoring.get('/aggregate/route;path=:route(*)', authorize('role:admin'), function (req, res, next) {
+    var match = {$match: {url: req.params.route}};
+
+    Monitoring.aggregate(
+        buildRouteAggregationPipeline(match),
+        function (err, result) {
+            // TODO
+            if (err) console.log(err);
+            if (!result) console.log(new Error('Error: ' + result));
+
             res.json(200, {
                 success: true,
                 total: result.length,
@@ -171,21 +214,33 @@ monitoring.get('/aggregate', authorize('role:admin'), function (req, res, next) 
  * Purges the complete monitoring collection.
  *
  * @authorization {role} admin
- * @not_yet_implemented
  */
 monitoring.delete('/purge', authorize('role:admin'), function (req, res, next) {
-    res.json(200, {success: true});
+    Monitoring.remove({}, function (err, result) {
+        // TODO
+        if (err) console.log(err);
+        if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
+
+        res.json(200, {success: true});
+    });
 });
 
 /**
- * @route DELETE /
+ * @route DELETE /route;path=:route(*)
  * Deletes all monitoring data for a given route.
  *
  * @authorization {role} admin
- * @not_yet_implemented
  */
-monitoring.delete('/:route(*)', authorize('role:admin'), function (req, res, next) {
-    res.json(200, {success: true});
+monitoring.delete('/route;path=:route(*)', authorize('role:admin'), function (req, res, next) {
+    var match = {url: req.params.route};
+
+    Monitoring.remove(match, function (err, result) {
+        // TODO
+        if (err) console.log(err);
+        if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
+
+        res.json(200, {success: true});
+    });
 });
 
 /**
@@ -195,7 +250,7 @@ monitoring.delete('/:route(*)', authorize('role:admin'), function (req, res, nex
  * Builds the monitoring aggregation pipeline. An additional match parameter can be given and will be inserted at first
  * array index.
  *
- * @param {Object} match MongoDB matching object.
+ * @param {Object} (optional) match MongoDB matching object.
  *
  * @return {Objects[]} Returns an array of objects defining the aggregation pipeline.
  */
