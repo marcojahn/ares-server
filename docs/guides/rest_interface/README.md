@@ -64,3 +64,22 @@ Example based on *users*
     var users = require('./controller/users');
     app.resource('users', users);
 
+## Controllables
+
+As explained above simple actions based on resources are directly handles by REST defintion and HTTP methods (CRUD).
+
+But when *to do* things based on resources REST resources must implement and specify _controllables_ a client can interact with.
+
+Example
+
+    DELETE http://localhost:8080/monitoring/purge
+
+Will delete all records within the _monitoring_ collection.
+
+## Matrix parameters
+
+TODO
+
+    http://localhost:8080/monitoring/aggregate/route;path=/users
+
+    monitoring.get('/aggregate/route;path=:route(*)', function (req, res, next) {});
