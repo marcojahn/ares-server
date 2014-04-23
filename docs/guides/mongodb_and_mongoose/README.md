@@ -23,7 +23,7 @@
 
     module.exports = mongoose.model('User', UserSchema);
 
-### Using Model from controlle
+### Using Model from controller
 
     // definition in config/routes.js
     var users = require('./controller/users');

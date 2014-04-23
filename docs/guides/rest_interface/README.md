@@ -39,3 +39,28 @@ Example based on *users*
     POST        /users          create a new user       yes                         users.post('/', ...)
     PUT         /users/:id      update a user by id     yes                         users.put('/:id', ...)
     DELETE      /users/:id      delete a user by id     no                          users.delete('/:id', ...)
+
+## Implementing a REST interface
+
+    /**
+     * @route GET /
+     *
+     * @anonymous
+     * Sends a list of users
+     */
+    users.get('/', function (req, res, next) {
+        User.find({}, function (err, user) {
+             /* if (err) handle your error*/
+
+            res.json(200, {
+                success: true,
+                total: user.length,
+                records: user
+            });
+        });
+    });
+
+    // definition in config/routes.js
+    var users = require('./controller/users');
+    app.resource('users', users);
+
