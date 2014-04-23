@@ -46,11 +46,9 @@ var authorize = function (checklist) {
 
 /**
  * @route GET /
- *
- * @facepalm
+ * Sends a list of users
  *
  * @anonymous
- * Sends a list of users
  */
 users.get('/', authorize('role:admin owner:id permission:read'), function (req, res, next) {
     User.find({}, function (err, user) {
