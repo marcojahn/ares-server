@@ -21,10 +21,28 @@
                 "description": "ARES Server Architecture"
             },
             {
+                "name": "rest_interface",
+                "url": "guides/rest_interface",
+                "title": "REST interface",
+                "description": "REST interface"
+            },
+            {
                 "name": "git_and_github",
                 "url": "guides/git_and_github",
                 "title": "Git & Github",
                 "description": "Using GIT and Github"
+            },
+            {
+                "name": "build_system",
+                "url": "guides/build_system",
+                "title": "Build system",
+                "description": "Build system"
+            },
+            {
+                "name": "mongodb_and_mongoose",
+                "url": "guides/mongodb_and_mongoose",
+                "title": "MongoDB and Mongoose",
+                "description": "MongoDB and Mongoose"
             }
         ]
     },
@@ -32,10 +50,10 @@
         "title": "Howtos",
         "items": [
             {
-                "name": "howto_1",
-                "url": "guides/howtos/howto_1",
-                "title": "Howto 1",
-                "description": "Howto 1"
+                "name": "middleware",
+                "url": "guides/howtos/middleware",
+                "title": "Middleware",
+                "description": "node.js middlware. How it really works."
             },
             {
                 "name": "using_async",

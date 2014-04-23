@@ -15,6 +15,12 @@
 - httpd server
     - Apache or NGinx
 
+## Setup and tooling (client)
+- [Sencha CMD 5 (Beta)](http://cdn.sencha.com/cmd/beta/5.0.0.116/release-notes.html)
+
+    If already installed use the following command from your command line
+    senche upgrade --beta
+
 ### Windows
 ARES developers using Windows must install additional software to resolve and compile NPM dependencies.
 
@@ -42,9 +48,12 @@ Both projects client and server can be cloned from Github.
 
 Ares client must be checked out to an httpd server (e.g. Apache, NGinx, ...)
 
-TODO server configuration / proxy
-
     git clone https://github.com/marcojahn/ares-client.git
+
+To prevent cross origin/domain security the used httpd server must be configured to proxy all requests from localhost/WebService to localhost:8080
+
+    Apache example
+    RewriteRule ^/WebService/(.*) http://127.0.0.1:8080/$1 [P]
 
 ## Setup and run ARES server
 

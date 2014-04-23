@@ -1,6 +1,17 @@
 # ARES Coding Conventions
 
+## Naming conventions
+
+All resources (including server side controllers, ...) except models(!) must use pluralized naming conventions (planes, users, ...).
+
+    REST resource       Controller      Model           MongoDB collection
+    /users              users.js        user.js         users
+    /monitoring         monitoring      monitoring.js   monitoring
+    /planes             planes.js       plane.js        planes
+    ...
+
 ## Language
+
 The overall project language will be american englisch (en-us).
 
 These rule applies to
@@ -9,8 +20,6 @@ These rule applies to
     - Documentation and guides
 
 ## Clean code
-
-TODO example
 
 - The following rules apply
     - Methods implement only one level im business logic; otherwise refactor
@@ -26,9 +35,6 @@ TODO example
     - A maximum of 30 instructions per method
 
 ## Documentation
-
-TODO move details to a specific howto
-TODO link to namespace convention
 
 - At least every public method, config, property, route definition must be documented using JSDuck API doc syntax.
 - Custom tags have been implemented to use JSDuck for server side API Doc generation.
@@ -104,8 +110,6 @@ API Doc generation is triggered automatically by the following build actions
 
 ## Namespacing
 
-TODO link to API Doc guide
-
 Namespacing itself is only used for API Doc.
 
 Prefix is @class; examples
@@ -116,3 +120,12 @@ Prefix is @class; examples
     @class pacflight.server.model.Planes
     @class pacflight.client.model.Planes
 
+## node.js modules
+
+[Export this: Interface Design patterns for node.js modules](http://bites.goodeggs.com/posts/export-this/)
+
+The node.js module defintions and rules can be obtained from the [Server Architecture Guide - Part file structure](#!/guide/server_architecture-section-file-structure).
+
+## REST interface
+
+The conventions for naming and implementing REST interfaces can be obtained from the [REST interace](#!/guide/rest_interface) documentation.
