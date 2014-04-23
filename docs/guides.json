@@ -66,6 +66,12 @@
                 "url": "guides/howtos/unit_testing",
                 "title": "Unit testing",
                 "description": "Using Mocha and SinonJS for unit testing your server side code."
+            },
+            {
+                "name": "authorization",
+                "url": "guides/howtos/authorization",
+                "title": "TBD authorization",
+                "description": "tbd"
             }
         ]
     }

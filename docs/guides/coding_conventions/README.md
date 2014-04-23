@@ -19,6 +19,14 @@ These rule applies to
     - API Doc
     - Documentation and guides
 
+## Coding conventions
+
+As stated in the [Getting started](!#/guides/getting_started) guide; all hinting/linting settings will be checked out and updated using the VCS system.
+
+All rules will be processed and used for IDE hinting automatically.
+
+JSHint settings will be also used and checked during Grunt build system automatically.
+
 ## Clean code
 
 - The following rules apply
