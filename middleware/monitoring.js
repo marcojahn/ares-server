@@ -33,7 +33,8 @@ module.exports = function (logger, options) {
 
             // And do the work we want now (logging!)
             // Conditionally do so if url matches a specific exclude.
-            if (options && options.excludes && options.excludes.indexOf(req.kvLog.url) > -1) return;
+            //if (options && options.excludes && options.excludes.indexOf(req.kvLog.url) > -1) return;
+            if (req.kvLog.url.indexOf('/monitoring') > -1) return;
 
             // Save a few more variables that we can only get at the end
             req.kvLog.status = res.statusCode;

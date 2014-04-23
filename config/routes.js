@@ -12,6 +12,7 @@ module.exports = function (app) {
     app.use('/anonymous/sessions', require('../controller/session'));
 
     // secured routes
+    app.use('/monitoring', require('../controller/monitoring'));
     app.use('/planes', require('../controller/planes'));
     app.use('/users', require('../controller/users'));
 
