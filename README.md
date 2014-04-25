@@ -67,3 +67,13 @@ Example:
 
 Now every request having "/:id" parameter will be checked by isOwner method and will compare if session user id equals given parameter id.
 If not a HTTP 666 (TODO) Status is sent
+
+# External documentation
+
+## Mongoose
+
+### Use populate for "joining" models
+
+- [Populate](http://mongoosejs.com/docs/populate.html)
+- [Document populate](http://mongoosejs.com/docs/api.html#document_Document-populate)
+- [Model populate](http://mongoosejs.com/docs/api.html#model_Model.populate)
