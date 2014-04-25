@@ -127,28 +127,28 @@ monitoring.get('/route;path=:route(*)', authorize('role:admin'), function (req, 
  *
  * Example route
 
- http://localhost:8080/monitoring/aggregate
+    // http://localhost:8080/monitoring/aggregate
 
- {
-     "success" : true,
-     "total" : 2,
-     "records" : [
-         {
-             "_id" : "/anonymous/sessions",
-             "maxDuration" : 98,
-             "total" : 7,
-             "minDuration" : 86,
-             "avgDuration" : 90.71428571428571
-         },
-         {
-             "_id" : "/users",
-             "maxDuration" : 4,
-             "total" : 4,
-             "minDuration" : 2,
-             "avgDuration" : 3
-         }
-     ]
- }
+    {
+        "success" : true,
+        "total" : 2,
+        "records" : [
+            {
+                "_id" : "/anonymous/sessions",
+                "maxDuration" : 98,
+                "total" : 7,
+                "minDuration" : 86,
+                "avgDuration" : 90.71428571428571
+            },
+            {
+                "_id" : "/users",
+                "maxDuration" : 4,
+                "total" : 4,
+                "minDuration" : 2,
+                "avgDuration" : 3
+            }
+        ]
+    }
 
  * @authorization {role} admin
  */
