@@ -1,48 +1,59 @@
 [
     {
-        "title": "ARES Development Guides",
+        "title": "ARES Server Development Guides",
         "items": [
             {
                 "name": "getting_started",
-                "url": "guides/getting_started",
+                "url": "guides/server/getting_started",
                 "title": "Getting started",
                 "description": "Getting started with ARES development."
             },
             {
                 "name": "coding_conventions",
-                "url": "guides/coding_conventions",
+                "url": "guides/server/coding_conventions",
                 "title": "Coding Conventions",
                 "description": "ARES Coding Conventions"
             },
             {
                 "name": "server_architecture",
-                "url": "guides/server_architecture",
+                "url": "guides/server/server_architecture",
                 "title": "Server Architecture",
                 "description": "ARES Server Architecture"
             },
             {
                 "name": "rest_interface",
-                "url": "guides/rest_interface",
+                "url": "guides/server/rest_interface",
                 "title": "REST interface",
                 "description": "REST interface"
             },
             {
                 "name": "git_and_github",
-                "url": "guides/git_and_github",
+                "url": "guides/server/git_and_github",
                 "title": "Git & Github",
                 "description": "Using GIT and Github"
             },
             {
                 "name": "build_system",
-                "url": "guides/build_system",
+                "url": "guides/server/build_system",
                 "title": "Build system",
                 "description": "Build system"
             },
             {
                 "name": "mongodb_and_mongoose",
-                "url": "guides/mongodb_and_mongoose",
+                "url": "guides/server/mongodb_and_mongoose",
                 "title": "MongoDB and Mongoose",
                 "description": "MongoDB and Mongoose"
+            }
+        ]
+    },
+    {
+        "title": "Client",
+        "items": [
+            {
+                "name": "getting_started",
+                "url": "guides/client/getting_started",
+                "title": "Getting started",
+                "description": "Getting started with ARES client development."
             }
         ]
     },
@@ -78,17 +89,6 @@
                 "url": "guides/howtos/authorization",
                 "title": "TBD authorization",
                 "description": "tbd"
-            }
-        ]
-    },
-    {
-        "title": "Client",
-        "items": [
-            {
-                "name": "getting_started",
-                "url": "guides/client/getting_started",
-                "title": "Getting started",
-                "description": "Getting started with ARES client development."
             }
         ]
     }
