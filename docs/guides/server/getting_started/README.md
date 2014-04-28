@@ -53,7 +53,8 @@ Ares client must be checked out to an httpd server (e.g. Apache, NGinx, ...)
 To prevent cross origin/domain security the used httpd server must be configured to proxy all requests from localhost/WebService to localhost:8080
 
     Apache example
-    RewriteRule ^/WebService/(.*) http://127.0.0.1:8080/$1 [P]
+    RewriteEngine On
+    RewriteRule ^/WebService/(.*) http://127.0.0.1:8080/$1 [NC,P]
 
 ## Setup and run ARES server
 
