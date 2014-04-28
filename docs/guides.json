@@ -80,5 +80,16 @@
                 "description": "tbd"
             }
         ]
+    },
+    {
+        "title": "Client",
+        "items": [
+            {
+                "name": "getting_started",
+                "url": "guides/client/getting_started",
+                "title": "Getting started",
+                "description": "Getting started with ARES client development."
+            }
+        ]
     }
 ]
