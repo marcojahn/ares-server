@@ -75,18 +75,22 @@ monitoring.get('/', authorize('role:admin'), function (req, res, next) {
 });
 
 /**
- * @route GET /route;path=:route(*)
+ * @route GET /route?route=(String)&page=(Number)&limit=(Number)
  * Returns pagable data for given route.
  *
  * Example route
 
-    http://localhost:8080/monitoring/route;path=/users
-
+     http://localhost:8080/monitoring/route?route=/users&page=1&limit=25
+ *
+ * @routeparam {String} route Route.
+ * @routeparam {Number} [page=1] (optional) page Page to display.
+ * @routeparam {Number} [limit=25] (optional) limit Number of records for page.
+ *
  * @authorization {role} admin
  * @not_yet_implemented
  */
 // TODO add paging
-monitoring.get('/route;path=:route(*)', authorize('role:admin'), function (req, res, next) {
+monitoring.get('/route', authorize('role:admin'), function (req, res, next) {
     // TODO use aggregate to get total sum
     // req.query.limit
     // req.query.page
@@ -96,7 +100,7 @@ monitoring.get('/route;path=:route(*)', authorize('role:admin'), function (req, 
 
     // TODO rewrite to ASYNC parallels to collect the full recordset (2 async calls find+count)
     Monitoring.find(
-        {url: req.params.route},
+        {url: req.query.route},
         null,
         {
             skip: 0, // TODO params
@@ -181,17 +185,18 @@ monitoring.get('/aggregate', authorize('role:admin'), function (req, res, next) 
 });
 
 /**
- * @route GET /aggregate/route;path=:route(*)
+ * @route GET /aggregate/route?route=(*)
  * Returns aggregated data for given route
  *
  * Example route
 
-    http://localhost:8080/monitoring/aggregate/route;path=/users
-
+    http://localhost:8080/monitoring/aggregate/route?route=/users
+ *
+ * @routeparam {String} route Route.
  * @authorization {role} admin
  */
-monitoring.get('/aggregate/route;path=:route(*)', authorize('role:admin'), function (req, res, next) {
-    var match = {$match: {url: req.params.route}};
+monitoring.get('/aggregate/route', authorize('role:admin'), function (req, res, next) {
+    var match = {$match: {url: req.query.route}};
 
     Monitoring.aggregate(
         buildRouteAggregationPipeline(match),
@@ -226,13 +231,15 @@ monitoring.delete('/purge', authorize('role:admin'), function (req, res, next) {
 });
 
 /**
- * @route DELETE /route;path=:route(*)
+ * @route DELETE /route?route=(String)
  * Deletes all monitoring data for a given route.
+ *
+ * @routeparam {String} route Route.
  *
  * @authorization {role} admin
  */
-monitoring.delete('/route;path=:route(*)', authorize('role:admin'), function (req, res, next) {
-    var match = {url: req.params.route};
+monitoring.delete('/route', authorize('role:admin'), function (req, res, next) {
+    var match = {url: req.query.route};
 
     Monitoring.remove(match, function (err, result) {
         // TODO
