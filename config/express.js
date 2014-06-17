@@ -24,7 +24,7 @@ module.exports = function (app, config) {
     app.use(session({
         secret: '73ab2c79-6267-4eeb-9f32-caae0bb82f13',
         key: 'ares-sid',
-        cookie: {httpOnly: true}
+        cookie: {httpOnly: true, maxAge: 1000 * 60 * 60}
     }));
 
     // if development

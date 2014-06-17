@@ -251,6 +251,37 @@ monitoring.delete('/route', authorize('role:admin'), function (req, res, next) {
 });
 
 /**
+ * @route GET /sessions
+ * Provides a list af currently active sessions
+ *
+ * @authorization {role} admin
+ */
+monitoring.get('/sessions', authorize('role:admin'), function (req, res, next) {
+    var sessionData,
+        result = [],
+        sessionList = req.sessionStore.sessions;
+
+    for (session in sessionList) {
+        if (sessionList.hasOwnProperty(session)) {
+            sessionData = JSON.parse(sessionList[session]);
+            result.push({
+                sid: session,
+                user: (sessionData.user) ? sessionData.user.username : 'anonymous',
+                usergroup: (sessionData.user) ? sessionData.user.usergroup : 'anonymous',
+                expires: sessionData.cookie.expires
+            });
+        }
+    }
+
+    res.json(200, {
+        success: true,
+        total: result.length,
+        records: result
+    });
+
+});
+
+/**
  * @method buildRouteAggregationPipeline
  * @private
  *
