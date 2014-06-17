@@ -56,12 +56,12 @@ session.post('/', function (req, res, next) {
         switch (reason) {
             case reasons.NOT_FOUND:
             case reasons.PASSWORD_INCORRECT:
-                res.json(666, {success: false, reason: 'invalid_credentials'}); // TODO
+                res.json(401, {success: false, reason: 'invalid_credentials'}); // TODO
                 break;
             case reasons.MAX_ATTEMPTS:
                 // send email or otherwise notify user that account is
                 // temporarily locked
-                res.json(666, {success: false, reason: 'user_locked'}); // TODO
+                res.json(401, {success: false, reason: 'user_locked'}); // TODO
                 break;
         }
     });
@@ -70,7 +70,17 @@ session.post('/', function (req, res, next) {
 });
 
 session.delete('/' /*, authorization ??*/, function (req, res, next) {
-    if (req.session && req.session.user) delete req.session.user;
-    console.log('session deleted');
-    res.json(200, {success: true});
+    if (req.session) {
+        if (!req.session.user) {
+            res.json(500, {success: false, reason: 'cannot_remove_public_session'});
+        }
+
+        delete req.session.user;
+        req.session.destroy(function () {
+            res.clearCookie('ares-sid', { path: '/' });
+            res.json(200, {success: true});
+        });
+    } else {
+        res.json(500, {success: false, reason: 'no_session_assigned'});
+    }
 });
