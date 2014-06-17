@@ -13,6 +13,13 @@ var users = express.Router();
 // http://bites.goodeggs.com/posts/export-this/
 exports = module.exports = users;
 
+// TODO placeholder, remove after fully implemented
+var authorize = function () {
+    return function (req, res, next) {
+        next();
+    };
+};
+
 //users.param('id', require('../middleware/authorization').isOwner);
 // simple logger for this router's requests
 // all requests to this router will first hit this middleware
@@ -24,25 +31,6 @@ exports = module.exports = users;
 //https://github.com/ForbesLindesay/connect-roles/blob/master/index.js
 //http://passportjs.org/guide/
 /* example role:admin owner:id permission:read */
-/**
- * @method authorize
- * For demo purposes.
- *
- * @param {String} checklist
- * @returns {Function}
- */
-var authorize = function (checklist) {
-    var checks = checklist.split(' ');
-
-    return function (req, res, next) {
-        console.log('running authorization based on checks: ' + checklist);
-        if (checklist.indexOf('forceFail') !== -1) {
-            console.log('Force failed');
-            res.redirect('/anonymous/login;')
-        }
-        next();
-    };
-};
 
 /**
  * @route GET /
@@ -54,11 +42,12 @@ users.get('/', authorize('role:admin owner:id permission:read'), function (req, 
     User.find({}, function (err, user) {
         if (err) console.log(err);
 
-        res.json({ // TODO util!
+        res.json('200', user);
+        /*res.json({ // TODO util!
             success: true,
             total: user.length,
             records: user
-        });
+        });*/
     });
 });
 
@@ -154,6 +143,12 @@ users.put('/:id', function (req, res, next) {
     });
 });
 
-users.delete('/:id', authorize('role:admin owner:id forceFail'), function (req, res, next) {
-    res.send(200, 'User deleted');
+users.delete('/:id', authorize('role:admin'), function (req, res, next) {
+    var userId = req.params.id;
+
+    User.findByIdAndRemove(userId, function (err) {
+        if (err) console.log(err);
+
+        res.json(200, {success: true});
+    });
 });
