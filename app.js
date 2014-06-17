@@ -21,3 +21,4 @@ require('./config/routes')(app);
 
 
 app.listen(config.port);
+console.log('up and running'); // todo instrumtalise a logging framework
