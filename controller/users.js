@@ -42,12 +42,12 @@ users.get('/', authorize('role:admin owner:id permission:read'), function (req, 
     User.find({}, function (err, user) {
         if (err) console.log(err);
 
-        res.json('200', user);
-        /*res.json({ // TODO util!
+        //res.json('200', user);
+        res.json({ // TODO util!
             success: true,
             total: user.length,
             records: user
-        });*/
+        });
     });
 });
 
