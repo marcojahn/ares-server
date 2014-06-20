@@ -51,7 +51,6 @@ planes.post('/', function (req, res, next) {
     var plane = new Plane(req.body);
 
     plane.save(function (err, plane) {
-        // TODO
         if (err) next(err);
         if (!plane) next(new Error('Failed to save plane: ' + plane));
 

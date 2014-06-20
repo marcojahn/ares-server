@@ -1,5 +1,9 @@
 exports.timestamps = function (obj) {
-    obj.lastmodified = new Date
+    var now = new Date();
+    obj.lastmodified = now;
+    if ( !obj.created ) {
+        obj.created = now;
+    }
 };
 
 

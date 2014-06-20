@@ -3,7 +3,7 @@ var timestamps = require('../../../middleware/enrichDocument').timestamps;
 module.exports = function documenttimestamps (schema, options) {
     schema.add(
         {
-            created: {type: Date, index: true, default: new Date},
+            created: {type: Date, index: true},
             lastmodified: {type: Date, index: true}
         }
     );
