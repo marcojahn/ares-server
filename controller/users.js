@@ -40,7 +40,7 @@ var authorize = function () {
  */
 users.get('/', authorize('role:admin owner:id permission:read'), function (req, res, next) {
     User.find({}, function (err, user) {
-        if (err) console.log(err);
+        if (err) return next(err);
 
         //res.json('200', user);
         res.json({ // TODO util!
@@ -80,9 +80,8 @@ users.get('/:id', authorize('role:admin owner:id permission:read'), function (re
     var id = req.params.id;
 
     User.findById(id, function (err, user) {
-        // TODO
-        if (err) console.log(err);
-        if (!user) console.log(new Error('Failed to load user: ' + user));
+        if (err) return next(err);
+        if (!user) return next(new Error('Failed to load user: ' + user));
 
         res.json(200, user);
     });
@@ -101,9 +100,8 @@ users.post('/', function (req, res, next) {
     var user = new User(req.body);
 
     user.save(function (err, user) {
-        // TODO
-        if (err) console.log(err);
-        if (!user) console.log(new Error('Failed to save user: ' + user));
+        if (err) return next(err);
+        if (!user) return next(new Error('Failed to save user: ' + user));
 
         res.json(200, user);
     });
@@ -130,13 +128,13 @@ users.put('/:id', function (req, res, next) {
     });*/
 
     User.findById(userId, function (err, user) {
-        if (err) console.log(err);
-        if (!user) console.log(new Error('Failed to update user: ' + user));
+        if (err) return next(err);
+        if (!user) return next(new Error('Failed to update user: ' + user));
 
         user.set(req.body);
         user.save(function (err) {
-            if (err) console.log(err);
-            if (!user) console.log(new Error('Failed to update user: ' + user));
+            if (err) return next(err);
+            if (!user) return next(new Error('Failed to update user: ' + user));
 
             res.json(200, user);
         });
@@ -147,7 +145,7 @@ users.delete('/:id', authorize('role:admin'), function (req, res, next) {
     var userId = req.params.id;
 
     User.findByIdAndRemove(userId, function (err) {
-        if (err) console.log(err);
+        if (err) return next(err);
 
         res.json(200, {success: true});
     });
