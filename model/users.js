@@ -21,7 +21,7 @@ var UserSchema = new Schema({
 });
 
 UserSchema.path('usergroup').validate(function (value) {
-    return /admin|user/i.test(value);
+    return /admin|user|guest/i.test(value);
 }, 'Invalid usergroup');
 
 UserSchema.virtual('isLocked').get(function() {
