@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89159cf5-3740-4f2e-834c-2edafe8d1fe3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/users.js" afterPath="$PROJECT_DIR$/controller/users.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/planes.js" afterPath="$PROJECT_DIR$/controller/planes.js" />
     </list>
     <ignored path="ares.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,10 +36,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="users.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="users.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controller/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.74907064" vertical-offset="1802" max-vertical-offset="2355">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1802" max-vertical-offset="2355">
               <caret line="147" column="28" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
               <folding />
             </state>
@@ -51,6 +51,26 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1785">
               <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="planes.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controller/planes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="122" max-vertical-offset="1380">
+              <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="planes.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/model/planes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.19516729" vertical-offset="0" max-vertical-offset="538">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -117,9 +137,9 @@
         <option value="$PROJECT_DIR$/config/express.js" />
         <option value="$PROJECT_DIR$/controller/monitoring.js" />
         <option value="$PROJECT_DIR$/model/planes.js" />
-        <option value="$PROJECT_DIR$/controller/planes.js" />
         <option value="$PROJECT_DIR$/model/users.js" />
         <option value="$PROJECT_DIR$/controller/users.js" />
+        <option value="$PROJECT_DIR$/controller/planes.js" />
       </list>
     </option>
   </component>
@@ -453,7 +473,7 @@
       <workItem from="1401704564916" duration="4773000" />
       <workItem from="1401869284326" duration="37000" />
       <workItem from="1402392835779" duration="3837000" />
-      <workItem from="1402996464802" duration="20844000" />
+      <workItem from="1402996464802" duration="21817000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <created>1397326011203</created>
@@ -567,7 +587,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="125646000" />
+    <option name="totallyTimeSpent" value="126619000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1073,22 +1093,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controller/planes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="833" max-vertical-offset="1380">
-          <caret line="81" column="9" selection-start-line="81" selection-start-column="9" selection-end-line="81" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/planes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="240">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/users.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1785">
@@ -1099,8 +1103,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controller/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.74907064" vertical-offset="1802" max-vertical-offset="2355">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1802" max-vertical-offset="2355">
           <caret line="147" column="28" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controller/planes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="122" max-vertical-offset="1380">
+          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/planes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19516729" vertical-offset="0" max-vertical-offset="538">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>

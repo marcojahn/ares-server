@@ -32,7 +32,7 @@ planes.get('/types', function (req, res, next) {
 
 planes.get('/', function (req, res, next) {
     Plane.find({}, function (err, plane) {
-        if (err) console.log(err);
+        if (err) next(err);
 
         //res.json('200', user);
         res.json({ // TODO util!
@@ -52,8 +52,8 @@ planes.post('/', function (req, res, next) {
 
     plane.save(function (err, plane) {
         // TODO
-        if (err) console.log(err);
-        if (!plane) console.log(new Error('Failed to save plane: ' + plane));
+        if (err) next(err);
+        if (!plane) next(new Error('Failed to save plane: ' + plane));
 
         res.json(200, plane);
     });
@@ -63,13 +63,13 @@ planes.put('/:id', function (req, res, next) {
     var planeId = req.params.id;
 
     Plane.findById(planeId, function (err, plane) {
-        if (err) console.log(err);
-        if (!plane) console.log(new Error('Failed to update plane: ' + plane));
+        if (err) next(err);
+        if (!plane) next(new Error('Failed to update plane: ' + plane));
 
         plane.set(req.body);
         plane.save(function (err) {
-            if (err) console.log(err);
-            if (!plane) console.log(new Error('Failed to update plane: ' + plane));
+            if (err) next(err);
+            if (!plane) next(new Error('Failed to update plane: ' + plane));
 
             res.json(200, plane);
         });
@@ -80,7 +80,7 @@ planes.delete('/:id', authorize('role:admin'), function (req, res, next) {
     var planeId = req.params.id;
 
     Plane.findByIdAndRemove(planeId, function (err) {
-        if (err) console.log(err);
+        if (err) next(err);
 
         res.json(200, {success: true});
     });
