@@ -32,6 +32,11 @@ session.get('/csrftoken', function (req, res, next) {
     res.json(200, {csrftoken: req.csrfToken()});
 });
 
+/**
+ * @route POST /
+ * @anonymous
+ * create a new session and authenticate
+ */
 session.post('/', function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
@@ -69,7 +74,12 @@ session.post('/', function (req, res, next) {
     //res.json(200, {success: true});
 });
 
-session.delete('/' /*, authorization ??*/, function (req, res, next) {
+/**
+ * @route DELETE /
+ * @anonymous
+ * Delete a session.
+ */
+session.delete('/', function (req, res, next) {
     if (req.session) {
         if (!req.session.user) {
             res.json(500, {success: false, reason: 'cannot_remove_public_session'});

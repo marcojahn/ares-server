@@ -1,24 +1,16 @@
 /**
  * @class ares.server.controller.Users
  *
- * Bla bla bla
- *
  * @author Marco Jahn <marco.jahn@prodyna.com>
  */
 var express = require('express'),
     mongoose = require('mongoose'),
+    authorization = require('../middleware/authorization'),
     User = mongoose.model('User');
 
 var users = express.Router();
 // http://bites.goodeggs.com/posts/export-this/
 exports = module.exports = users;
-
-// TODO placeholder, remove after fully implemented
-var authorize = function () {
-    return function (req, res, next) {
-        next();
-    };
-};
 
 //users.param('id', require('../middleware/authorization').isOwner);
 // simple logger for this router's requests
@@ -36,9 +28,9 @@ var authorize = function () {
  * @route GET /
  * Sends a list of users
  *
- * @anonymous
+ * @authorization {role} [name=guest] guest Authorization additional text
  */
-users.get('/', authorize('role:admin owner:id permission:read'), function (req, res, next) {
+users.get('/', authorization('guest'), function (req, res, next) {
     User.find({}, function (err, user) {
         if (err) return next(err);
 
@@ -69,13 +61,11 @@ users.get('/', authorize('role:admin owner:id permission:read'), function (req, 
  *
  * @param {Number} id User id.
  *
- * @authorization {role} [name=admin] admin Authorization additional text
- * @authorization {owner} [name=id] id Owner additional text
- * @authorization {permission} [name=r] rw permission additional text
+ * @authorization {role} [name=guest] guest Authorization additional text
  *
  * @return {Users} List of users.
  */
-users.get('/:id', authorize('role:admin owner:id permission:read'), function (req, res, next) {
+users.get('/:id', authorization('guest'), function (req, res, next) {
     //res.send(200, 'get user by id: ' + req.params.id);
     var id = req.params.id;
 
@@ -87,16 +77,15 @@ users.get('/:id', authorize('role:admin owner:id permission:read'), function (re
     });
 });
 
-/* Demo data
-{
-    "username": "marco.jahn",
-    "password": "1234",
-    "email": "marco.jahn@gmail.com",
-    "firstname": "Marco",
-    "lastname": "Jahn"
-}
+/**
+ * @route POST /
+ * Create a new user.
+ *
+ * @authorization {role} [name=admin] admin Authorization additional text
+ *
+ * @return {User} Created user.
  */
-users.post('/', function (req, res, next) {
+users.post('/', authorization('admin'), function (req, res, next) {
     var user = new User(req.body);
 
     user.save(function (err, user) {
@@ -107,7 +96,15 @@ users.post('/', function (req, res, next) {
     });
 });
 
-users.put('/:id', function (req, res, next) {
+/**
+ * @route PUT /:id
+ * Update a user
+ *
+ * @authorization {role} [name=admin] admin Authorization additional text
+ *
+ * @return {User} Updated user.
+ */
+users.put('/:id', authorization('admin'), function (req, res, next) {
     var userId = req.params.id;
 
     /*
@@ -141,7 +138,16 @@ users.put('/:id', function (req, res, next) {
     });
 });
 
-users.delete('/:id', authorize('role:admin'), function (req, res, next) {
+
+/**
+ * @route DELETE /:id
+ * Delete a user.
+ *
+ * @authorization {role} [name=admin] admin Authorization additional text
+ *
+ * @return {Boolean} success:true
+ */
+users.delete('/:id', authorization('admin'), function (req, res, next) {
     var userId = req.params.id;
 
     User.findByIdAndRemove(userId, function (err) {

@@ -1,19 +1,25 @@
+/**
+ * @class ares.server.controller.Planes
+ *
+ * @author Marco Jahn <marco.jahn@prodyna.com>
+ */
+
 var express = require('express'),
     mongoose = require('mongoose'),
+    authorization = require('../middleware/authorization'),
     Plane = mongoose.model('Plane');
 
 var planes = express.Router();
 // http://bites.goodeggs.com/posts/export-this/
 exports = module.exports = planes;
 
-// TODO placeholder, remove after fully implemented
-var authorize = function () {
-    return function (req, res, next) {
-        next();
-    };
-};
-
-planes.get('/types', function (req, res, next) {
+/**
+ * @route GET /types
+ * Sends a list fo plane types.
+ *
+ * @authorization {role} [name=guest] guest Authorization additional text
+ */
+planes.get('/types', authorization('guest'), function (req, res, next) {
     res.json(200, [
         {
             type: 'type_01',
@@ -30,7 +36,13 @@ planes.get('/types', function (req, res, next) {
     ])
 });
 
-planes.get('/', function (req, res, next) {
+/**
+ * @route GET /
+ * Sends a list of planes
+ *
+ * @authorization {role} [name=guest] guest Authorization additional text
+ */
+planes.get('/', authorization('guest'), function (req, res, next) {
     Plane.find({}, function (err, plane) {
         if (err) next(err);
 
@@ -43,11 +55,23 @@ planes.get('/', function (req, res, next) {
     });
 });
 
-planes.get('/:id', function (req, res, next) {
+/**
+ * @route GET /:id
+ * Sends a plane by id.
+ *
+ * @authorization {role} [name=guest] guest Authorization additional text
+ */
+planes.get('/:id', authorization('guest'), function (req, res, next) {
     res.send(200, 'get plane by id: ' + req.params.id);
 });
 
-planes.post('/', function (req, res, next) {
+/**
+ * @route POST /
+ * Creates a plane.
+ *
+ * @authorization {role} [name=admin] admin Authorization additional text
+ */
+planes.post('/', authorization('admin'), function (req, res, next) {
     var plane = new Plane(req.body);
 
     plane.save(function (err, plane) {
@@ -58,7 +82,13 @@ planes.post('/', function (req, res, next) {
     });
 });
 
-planes.put('/:id', function (req, res, next) {
+/**
+ * @route PUT /:id
+ * Updates a plane by id.
+ *
+ * @authorization {role} [name=admin] admin Authorization additional text
+ */
+planes.put('/:id', authorization('admin'), function (req, res, next) {
     var planeId = req.params.id;
 
     Plane.findById(planeId, function (err, plane) {
@@ -75,7 +105,13 @@ planes.put('/:id', function (req, res, next) {
     });
 });
 
-planes.delete('/:id', authorize('role:admin'), function (req, res, next) {
+/**
+ * @route Delete /:id
+ * Deletes a plane
+ *
+ * @authorization {role} [name=admin] admin Authorization additional text
+ */
+planes.delete('/:id', authorization('admin'), function (req, res, next) {
     var planeId = req.params.id;
 
     Plane.findByIdAndRemove(planeId, function (err) {

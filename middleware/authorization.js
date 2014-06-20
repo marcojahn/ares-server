@@ -1,32 +1,32 @@
-// 'use strict';
+/**
+ * @class ares.server.middleware.Authorization
+ *
+ * @author Marco Jahn <marco.jahn@prodyna.com>
+ */
 
-module.exports = Roles;
+/**
+ * Method auth... bla
+ * @param {Object} req request object.
+ * @param res
+ * @param next
+ */
+module.exports = Authorization;
 
-function Roles (options) {
-    options = options || {};
-    this.functionList = [];
-    this.failureHandler = options.failureHandler || defaultFailureHandler;
-    this.async = options.async || false;
-    this.userProperty = options.userProperty || 'user';
+function defaultFailureHandler(req, res, next) {
+    res.json(403, {success: false, reason: 'not_authorized'});
 }
 
-function defaultFailureHandler(req, res, action) {
-    res.json(403, {success: false, reason: 'not_authorized'}); // TODO
+function Authorization (options) {
+    return function (req, res, next) {
+        if (req.session.user.usergroup === 'admin') {
+            next();
+        } else if (req.session.user.usergroup === options) {
+            next();
+        } else if (options === 'guest' && req.session.user.usergroup === 'user') {
+            next();
+        } else {
+            console.log('authorization middleware :: not authorized');
+            defaultFailureHandler(req, res, next);
+        }
+    };
 }
-
-
-/*exports.isOwner = function (req, res, next, id) {
-    // TODO
-    console.log('authorization middleware');
-    if (!req.session || !req.session.user) {
-        req.session = {user: {id: 'foobar'}};
-    }
-    console.log(req.session.user.id);
-
-    if (id === req.session.user.id) {
-        next();
-    }
-
-    //next(new Error('Method not allowed'));
-    res.json(666, 'You are not allowed to edit that entry');
-};*/

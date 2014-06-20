@@ -30,17 +30,11 @@
  */
 var express = require('express'),
     mongoose = require('mongoose'),
+    authorization = require('../middleware/authorization'),
     Monitoring = mongoose.model('Monitoring');
 
 var monitoring = express.Router();
 exports = module.exports = monitoring;
-
-// TODO placeholder, remove after fully implemented
-var authorize = function () {
-    return function (req, res, next) {
-        next();
-    };
-};
 
 /**
  * @route GET /
@@ -57,7 +51,7 @@ var authorize = function () {
 
  * @authorization {role} admin
  */
-monitoring.get('/', authorize('role:admin'), function (req, res, next) {
+monitoring.get('/', authorization('admin'), function (req, res, next) {
     //res.send('200', 'get all the planes 3');
 
     Monitoring.distinct('url', function (err, result) {
@@ -90,7 +84,7 @@ monitoring.get('/', authorize('role:admin'), function (req, res, next) {
  * @not_yet_implemented
  */
 // TODO add paging
-monitoring.get('/route', authorize('role:admin'), function (req, res, next) {
+monitoring.get('/route', authorization('admin'), function (req, res, next) {
     // TODO use aggregate to get total sum
     // req.query.limit
     // req.query.page
@@ -156,7 +150,7 @@ monitoring.get('/route', authorize('role:admin'), function (req, res, next) {
 
  * @authorization {role} admin
  */
-monitoring.get('/aggregate', authorize('role:admin'), function (req, res, next) {
+monitoring.get('/aggregate', authorization('admin'), function (req, res, next) {
     // http://mongoosejs.com/docs/api.html#model_Model.aggregate
     // http://stackoverflow.com/questions/14653282/mongodb-aggregation-how-to-return-a-the-object-with-min-max-instead-of-the-valu
     // https://groups.google.com/forum/#!topic/mongodb-user/Y1syjLwTQPE
@@ -195,7 +189,7 @@ monitoring.get('/aggregate', authorize('role:admin'), function (req, res, next) 
  * @routeparam {String} route Route.
  * @authorization {role} admin
  */
-monitoring.get('/aggregate/route', authorize('role:admin'), function (req, res, next) {
+monitoring.get('/aggregate/route', authorization('admin'), function (req, res, next) {
     var match = {$match: {url: req.query.route}};
 
     Monitoring.aggregate(
@@ -220,7 +214,7 @@ monitoring.get('/aggregate/route', authorize('role:admin'), function (req, res, 
  *
  * @authorization {role} admin
  */
-monitoring.delete('/purge', authorize('role:admin'), function (req, res, next) {
+monitoring.delete('/purge', authorization('admin'), function (req, res, next) {
     Monitoring.remove({}, function (err, result) {
         // TODO
         if (err) console.log(err);
@@ -238,7 +232,7 @@ monitoring.delete('/purge', authorize('role:admin'), function (req, res, next) {
  *
  * @authorization {role} admin
  */
-monitoring.delete('/route', authorize('role:admin'), function (req, res, next) {
+monitoring.delete('/route', authorization('admin'), function (req, res, next) {
     var match = {url: req.query.route};
 
     Monitoring.remove(match, function (err, result) {
@@ -256,7 +250,7 @@ monitoring.delete('/route', authorize('role:admin'), function (req, res, next) {
  *
  * @authorization {role} admin
  */
-monitoring.get('/sessions', authorize('role:admin'), function (req, res, next) {
+monitoring.get('/sessions', authorization('admin'), function (req, res, next) {
     var sessionData,
         result = [],
         sessionList = req.sessionStore.sessions;
