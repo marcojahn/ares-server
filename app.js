@@ -3,6 +3,9 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var fs = require('fs');
+var later = require('later');
+var workflow = require('./util/cron/processWorkflow');
+
 
 // TODO refactor
 // bootstrap db connection
@@ -21,4 +24,9 @@ require('./config/routes')(app);
 
 
 app.listen(config.port);
+
+// todo make hübsch
+var schedule = later.parse.text('every 5 seconds');
+//var cron = later.setInterval(workflow.returnLent, schedule);
+
 console.log('up and running'); // todo instrumtalise a logging framework
