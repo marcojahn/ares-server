@@ -9,6 +9,12 @@ var bcrypt = require('bcrypt'),
     MAX_LOGIN_ATTEMPTS = 5,
     LOCK_TIME = 2 * 60 * 60 * 1000;
 
+// TODO validUntil must not be in the past
+var LicenseSchema = new Schema({
+    planetype: {type: String, required: true, index: true},
+    validUntil: {type: Date, required: true}
+});
+
 var UserSchema = new Schema({
     username: {type: String, required: true, index: {unique: true}},
     password: {type: String, required: true},
@@ -17,7 +23,8 @@ var UserSchema = new Schema({
     firstname: String,
     lastname: String,
     lockUntil: Date,
-    loginAttempts: Number
+    loginAttempts: Number,
+    licenses: [LicenseSchema]
 });
 
 UserSchema.path('usergroup').validate(function (value) {
