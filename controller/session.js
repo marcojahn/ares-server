@@ -6,38 +6,30 @@
  * @author Marco Jahn <marco.jahn@prodyna.com>
  */
 
-var express = require('express')
-User = require('../model/users');
+var express = require('express'),
+    User = require('../model/users');
 
-var session = express.Router();
+var session = {};
 // http://bites.goodeggs.com/posts/export-this/
 exports = module.exports = session;
+session.routes = express.Router();
 
 /**
- * @route GET /
- * @anonymous
- * Standard route returns x.
+ * Default route implementation.
+ * @param req
+ * @param res
+ * @param next
  */
-session.get('/', function (req, res, next) {
+session.getDefault = function (req, res, next) {
     // TODO
     res.send('400', 'METHOD NOT ALLOWED');
-});
+};
 
-/**
- * @route GET /csrftoken
- * @anonymous
- * Sends session csrf token.
- */
-session.get('/csrftoken', function (req, res, next) {
+session.getCsrfTocken = function (req, res, next) {
     res.json(200, {csrftoken: req.csrfToken()});
-});
+};
 
-/**
- * @route POST /
- * @anonymous
- * create a new session and authenticate
- */
-session.post('/', function (req, res, next) {
+session.createSession = function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
 
@@ -72,14 +64,9 @@ session.post('/', function (req, res, next) {
     });
 
     //res.json(200, {success: true});
-});
+};
 
-/**
- * @route DELETE /
- * @anonymous
- * Delete a session.
- */
-session.delete('/', function (req, res, next) {
+session.deleteSession = function (req, res, next) {
     if (req.session) {
         if (!req.session.user) {
             res.json(500, {success: false, reason: 'cannot_remove_public_session'});
@@ -93,4 +80,32 @@ session.delete('/', function (req, res, next) {
     } else {
         res.json(500, {success: false, reason: 'no_session_assigned'});
     }
-});
+};
+
+/**
+ * @route GET /
+ * @anonymous
+ * Standard route returns x.
+ */
+session.routes.get('/', session.getDefault);
+
+/**
+ * @route GET /csrftoken
+ * @anonymous
+ * Sends session csrf token.
+ */
+session.routes.get('/csrftoken', session.getCsrfTocken);
+
+/**
+ * @route POST /
+ * @anonymous
+ * create a new session and authenticate
+ */
+session.routes.post('/', session.createSession);
+
+/**
+ * @route DELETE /
+ * @anonymous
+ * Delete a session.
+ */
+session.routes.delete('/', session.deleteSession);

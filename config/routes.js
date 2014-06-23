@@ -9,11 +9,12 @@ module.exports = function (app) {
     });
 
     // public / anonymous routes
-    app.use('/anonymous/sessions', require('../controller/session'));
+    app.use('/anonymous/sessions', require('../controller/session').routes);
 
     // secured routes
-    app.use('/monitoring', require('../controller/monitoring'));
-    app.use('/planes', require('../controller/planes'));
-    app.use('/users', require('../controller/users'));
+    app.use('/monitoring', require('../controller/monitoring').routes);
+    app.use('/planes', require('../controller/planes').routes);
+    app.use('/users', require('../controller/users').routes);
+    app.use('/reservations', require('../controller/reservation').routes);
 
 };
