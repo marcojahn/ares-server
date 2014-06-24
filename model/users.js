@@ -1,5 +1,6 @@
 var bcrypt = require('bcrypt'),
     mongoose = require('mongoose'),
+    moment = require('moment'),
     Schema = mongoose.Schema,
     mongoosePluginDocumentTimestamps = require('../util/mongoose/plugins/documenttimestamps'),
     documentEnrichUsers = require('../middleware/enrichDocument').users,
@@ -31,7 +32,7 @@ UserSchema.path('usergroup').validate(function (value) {
     return /admin|user|guest/i.test(value);
 }, 'Invalid usergroup');
 
-UserSchema.virtual('isLocked').get(function() {
+UserSchema.virtual('isLocked').get(function () {
     // check for a future lockUntil timestamp
     return !!(this.lockUntil && this.lockUntil > Date.now());
 });
@@ -62,6 +63,46 @@ UserSchema.methods.incLoginAttempts = function(cb) {
         updates.$set = { lockUntil: Date.now() + LOCK_TIME };
     }
     return this.update(updates, cb);
+};
+
+UserSchema.methods.getValidLicenses = function () {
+    var i, license,
+        now = moment().subtract(1, 'day'),
+        userLicenses = this.licenses,
+        iLen = userLicenses.length,
+        result = [];
+
+    for (i = 0; i < iLen; i++) {
+        license = userLicenses[i];
+
+        if (moment(now).isBefore(license.validUntil)) {
+            result.push(license);
+        }
+    }
+
+    return result;
+};
+
+UserSchema.methods.isAllowedToReservePlanetypeAndUntil = function (planetype, until) {
+    var i, license,
+        retVal = false,
+        licenses = this.getValidLicenses(),
+        iLen = licenses.length;
+
+    for (i = 0; i < iLen; i++) {
+        license = licenses[i];
+
+        // check if planetype is valid
+        if (license.planetype === planetype) {
+
+            // check if license is valid until reservation ends
+            if (moment(until).isBefore(license.validUntil)) {
+                retVal = true;
+            }
+        }
+    }
+
+    return retVal;
 };
 
 // expose enum on the model, and provide an internal convenience reference

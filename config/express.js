@@ -12,7 +12,6 @@ module.exports = function (app, config) {
 
     app.use(monitoring({}, config));
 
-    //app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
     app.use(morgan((config.env === 'development') ? 'dev' : 'tiny')); // log every request to the console
 
     // DO NOT USE bodyParser() - https://gist.github.com/cerebrl/6487587

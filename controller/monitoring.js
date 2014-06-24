@@ -37,6 +37,12 @@ var monitoring = {};
 exports = module.exports = monitoring;
 monitoring.routes = express.Router();
 
+/**
+ * routeList
+ * @param req
+ * @param res
+ * @param next
+ */
 monitoring.routeList = function (req, res, next) {
     //res.send('200', 'get all the planes 3');
 
@@ -54,6 +60,12 @@ monitoring.routeList = function (req, res, next) {
     });
 };
 
+/**
+ * listDataForRoute
+ * @param req
+ * @param res
+ * @param next
+ */
 monitoring.listDataForRoute = function (req, res, next) {
     // TODO use aggregate to get total sum
     // req.query.limit
@@ -89,6 +101,12 @@ monitoring.listDataForRoute = function (req, res, next) {
     );
 };
 
+/**
+ * getAggregated
+ * @param req
+ * @param res
+ * @param next
+ */
 monitoring.getAggregated = function (req, res, next) {
     // http://mongoosejs.com/docs/api.html#model_Model.aggregate
     // http://stackoverflow.com/questions/14653282/mongodb-aggregation-how-to-return-a-the-object-with-min-max-instead-of-the-valu
@@ -117,6 +135,12 @@ monitoring.getAggregated = function (req, res, next) {
     )
 };
 
+/**
+ * getAggregationByRoute
+ * @param req
+ * @param res
+ * @param next
+ */
 monitoring.getAggregationByRoute = function (req, res, next) {
     var match = {$match: {url: req.query.route}};
 
@@ -136,6 +160,12 @@ monitoring.getAggregationByRoute = function (req, res, next) {
     )
 };
 
+/**
+ * purgeMonitoring
+ * @param req
+ * @param res
+ * @param next
+ */
 monitoring.purgeMonitoring = function (req, res, next) {
     Monitoring.remove({}, function (err, result) {
         // TODO
@@ -146,6 +176,12 @@ monitoring.purgeMonitoring = function (req, res, next) {
     });
 };
 
+/**
+ * deleteByRoute
+ * @param req
+ * @param res
+ * @param next
+ */
 monitoring.deleteByRoute = function (req, res, next) {
     var match = {url: req.query.route};
 
@@ -158,8 +194,14 @@ monitoring.deleteByRoute = function (req, res, next) {
     });
 };
 
+/**
+ * listSession
+ * @param req
+ * @param res
+ * @param next
+ */
 monitoring.listSessions = function (req, res, next) {
-    var sessionData,
+    var session, sessionData,
         result = [],
         sessionList = req.sessionStore.sessions;
 

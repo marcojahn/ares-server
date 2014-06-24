@@ -1,19 +1,28 @@
 var mongoose = require('mongoose'),
+    moment = require('moment'),
     Schema = mongoose.Schema,
     mongoosePluginDocumentTimestamps = require('../util/mongoose/plugins/documenttimestamps');
 
-// TODO user refs !!
-// http://mongoosejs.com/docs/populate.html
+var untilDateIsBeforeStartDate = [
+    function (val) {
+        return moment(val).isAfter(this.start);
+    },
+    'Until date must be before start date',
+];
 
-// planetype use ENUM as used for client
-// definition: controller/planes.js#22
-// Move to config
-// http://mongoosejs.com/docs/api.html#schema_string_SchemaString-enum
+var startDateMustBeGreaterThanNow = [
+    function (val) {
+        return moment(val).isAfter();
+    },
+    'Start date must not be in the past'
+];
+
 var ReservationSchema = new Schema({
-    plane: {type: String, required: true, index: {unique: true}},
+    plane: {type: String, required: true, index: true},
+    planetype: {type: String, required: true, index: true},
     status: {type: String, required: true, index: true, default: 'reserved'}, // TODO use config
-    from: {type: Date, required: true, index: true},
-    to: {type: Date, required: true, index: true},
+    start: {type: Date, required: true, index: true, validate: startDateMustBeGreaterThanNow},
+    until: {type: Date, required: true, index: true, validate: untilDateIsBeforeStartDate},
     by: {type: String, required: true, index: true}
 });
 
