@@ -6,6 +6,7 @@
 var util = require('util'),
     express = require('express'),
     mongoose = require('mongoose'),
+    moment = require('moment'),
     authorization = require('../middleware/authorization'),
     User = mongoose.model('User'),
     Plane = mongoose.model('Plane'),
@@ -90,52 +91,62 @@ reservations.creatReservation = function (req, res, next) {
         delete req.body.status;
     }
 
-    var reservation = new Reservation(req.body);
+    // check if time slot for reservation is already used
+    var startDate = moment(req.body.start);
+    var endDate = moment(req.body.until);
+    var planeType = req.body.planetype;
 
-    // TODO
-    // check if plane is not reserved in that slot
-//    var startDate = ISODate("2014-06-29T00:00:00.000Z");
-//    var endDate = ISODate("2014-06-30T00:00:00.000Z");
-//    db.reservations.find(
-//        {$and: [
-//            {planetype: 'type_01'},
-//            {$or: [
-//                // existing startdate in new range
-//                {start: {$gte: startDate, $lte: endDate}},
-//
-//                // existing enddate in new range
-//                {until: {$gte: startDate, $lte: endDate}},
-//
-//                // new range is between existing startdate and enddate
-//                {$and: [
-//                    {start: {$lte: startDate}},
-//                    {until: {$gte: endDate}}
-//                ]},
-//
-//                // existing startdate and enddate is between new dates
-//                {$and: [
-//                    {start: {$gte: startDate}},
-//                    {until: {$lte: endDate}}
-//                ]}
-//            ]}
-//        ]}
-//    )
+    Reservation.findOne(
+        {$and: [
+            {planetype: planeType},
+            {status: {$in: ['reserved', 'lent']}}, // TODO dynamically
+            {$or: [
+                // existing startdate in new range
+                {start: {$gte: startDate, $lte: endDate}},
 
-    User.findById(req.session.user._id, function (err, user) {
+                // existing enddate in new range
+                {until: {$gte: startDate, $lte: endDate}},
 
-        var isAllowed = user.isAllowedToReservePlanetypeAndUntil(reservation.planetype, reservation.until);
+                // new range is between existing startdate and enddate
+                {$and: [
+                    {start: {$lte: startDate}},
+                    {until: {$gte: endDate}}
+                ]},
 
-            if (isAllowed) {
-                reservation.save(function (err, reservation) {
-                    if (err) return next(err);
-                    if (!reservation) return next(new Error('Failed to save reservation: ' + reservation));
-
-                    res.json(200, reservation);
-                });
-            } else {
-                res.json(666, {success: false, reason: 'license_not_valid_until'});
+                // existing startdate and enddate is between new dates
+                {$and: [
+                    {start: {$gte: startDate}},
+                    {until: {$lte: endDate}}
+                ]}
+            ]}
+        ]},
+        function (err, reservation) {
+            if (err) return next(err);
+            if (reservation !== null) {
+                res.json(666, {success: false, reason: 'resource_already_booked'});
+                return;
             }
-    });
+
+            var reservation = new Reservation(req.body);
+
+            // check if user is allowed to book that plane in that period
+            User.findById(req.session.user._id, function (err, user) {
+                var isAllowed = user.isAllowedToReservePlanetypeAndUntil(reservation.planetype, reservation.until);
+
+                if (isAllowed) {
+                    reservation.save(function (err, reservation) {
+                        if (err) return next(err);
+                        if (!reservation) return next(new Error('Failed to save reservation: ' + reservation));
+
+                        res.json(200, reservation);
+                    });
+                } else {
+                    res.json(666, {success: false, reason: 'license_not_valid_until'});
+                }
+            });
+
+        }
+    );
 };
 
 reservations.doWorkflowStep = function (req, res, next) {
