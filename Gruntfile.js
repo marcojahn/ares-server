@@ -63,9 +63,38 @@ module.exports = function(grunt) {
             }
         },
         mochaTest: {
-            all: {
+            xml: {
                 options: {
-                    reporter: 'spec'
+                    reporter: 'XUnit',
+                    require: 'test/blanket',
+                    captureFile: 'build/coverage.xml'
+                },
+                src: ['test/**/*.js']
+            },
+            test: {
+                options: {
+                    reporter: 'spec',
+                    // Require blanket wrapper here to instrument other required
+                    // files on the fly.
+                    //
+                    // NB. We cannot require blanket directly as it
+                    // detects that we are not running mocha cli and loads differently.
+                    //
+                    // NNB. As mocha is 'clever' enough to only run the tests once for
+                    // each file the following coverage task does not actually run any
+                    // tests which is why the coverage instrumentation has to be done here
+                    require: 'test/blanket'
+                },
+                src: ['test/**/*.js']
+            },
+            coverage: {
+                options: {
+                    reporter: 'html-cov',
+                    // use the quiet flag to suppress the mocha console output
+                    quiet: true,
+                    // specify a destination file to capture the mocha
+                    // output (the quiet option does not suppress this)
+                    captureFile: 'build/coverage.html'
                 },
                 src: ['test/**/*.js']
             }
@@ -115,20 +144,33 @@ module.exports = function(grunt) {
                     ' config/ controller/ middleware/ model/ util/ app.js' +
                     ' --output <%= appconfig.docs %>'
             }
+        },
+        jshint: {
+            options: {
+                force: true,
+                //reporter: require('jshint-stylish'),
+                //reporterOutput: '<%= appconfig.buildFilePut %>' + '/jshint'
+                reporter: require('jshint-junit-reporter'),
+                reporterOutput: '<%= appconfig.buildFilePut %>' + '/jshint-junit-output.xml',
+
+                curly: true,
+                eqeqeq: true,
+                eqnull: true,
+                browser: false,
+
+                globals: {
+                    'exports': true
+                }
+
+            },
+            all: '<%= appconfig.sources %>'
         }
     });
 
-    grunt.registerTask('build', [
-        'clean:build',
-        'jsduck',
-        'complexity',
-        'mochaTest',
-        'copy:build',
-        'compress:build'
-    ]);
-
     grunt.loadNpmTasks('grunt-complexity');
     grunt.registerTask('complexityReport', ['complexity']);
+
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.registerTask('jsduck', [
         'clean:docs',
@@ -136,4 +178,26 @@ module.exports = function(grunt) {
         'compress:docs'
     ]);
 
+    // TODO test istanbul for test coverage
+    // https://github.com/taichi/grunt-istanbul
+    // https://github.com/gregjopa/express-app-testing-demo
+    grunt.registerTask('testcov', [
+        //'mochaTest:xml',
+        'mochaTest:test',
+        'mochaTest:coverage'
+    ]);
+
+    grunt.registerTask('test', ['mochaTest:test']);
+
+    grunt.registerTask('build', [
+        'clean:build',
+        'jsduck',
+        'jshint',
+        'complexity',
+        //'mochaTest:xml',
+        'mochaTest:test',
+        'mochaTest:coverage',
+        'copy:build',
+        'compress:build'
+    ]);
 };

@@ -21,7 +21,8 @@
     "morgan": "^1.1.1",
     "bcrypt": "^0.7.8",
     "later": "^1.1.6",
-    "moment": "^2.7.0"
+    "moment": "^2.7.0",
+    "async": "^0.9.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -35,7 +36,12 @@
     "grunt-complexity": "^0.2.0",
     "grunt-debug-task": "^0.1.4",
     "should": "^4.0.4",
-    "grunt-shell": "^0.7.0"
+    "grunt-shell": "^0.7.0",
+    "blanket": "^1.1.6",
+    "walk": "^2.3.3",
+    "grunt-contrib-jshint": "^0.10.0",
+    "jshint-stylish": "^0.2.0",
+    "jshint-junit-reporter": "0.0.6"
   },
   "keywords": [],
   "repository": "",
