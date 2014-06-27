@@ -23,7 +23,20 @@
     "later": "^1.1.6",
     "moment": "^2.7.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "mocha": "^1.20.1",
+    "sinon": "^1.10.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "load-grunt-tasks": "^0.6.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-mocha-test": "^0.11.0",
+    "grunt-contrib-compress": "^0.9.1",
+    "grunt-complexity": "^0.2.0",
+    "grunt-debug-task": "^0.1.4",
+    "should": "^4.0.4",
+    "grunt-shell": "^0.7.0"
+  },
   "keywords": [],
   "repository": "",
   "scripts": {},
