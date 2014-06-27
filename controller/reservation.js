@@ -7,6 +7,7 @@ var util = require('util'),
     express = require('express'),
     mongoose = require('mongoose'),
     moment = require('moment'),
+    async = require('async'),
     authorization = require('../middleware/authorization'),
     User = mongoose.model('User'),
     Plane = mongoose.model('Plane'),
@@ -39,18 +40,36 @@ var reservations = {};
 exports = module.exports = reservations;
 reservations.routes = express.Router();
 
-// TODO planes mit status
-// - xy -> alle flugzeuge mit status xy
-// - [none] alle flugzeuge ohne status (frei)
-// wir arbeiten hier nur auf "aktiven" oder "freien" flugzeugen!
+function buildStatusGridFilter (req) {
+    var i, iLen, filterList, list,
+        matcher = {};
 
-reservations.listReservations = function (req, res, next) {
-    var match = {$match: {url: req.query.status}};
+    // parse filter
+    if (req.query.filter) {
+        list = [];
+        filterList = JSON.parse(req.query.filter)[0];
 
-    Reservation.find({}, function (err, reservation) {
+        for (i = 0, iLen = filterList.value.length; i < iLen; i++) {
+            list.push(filterList.value[i]);
+        }
+
+        matcher = {'status': {$in: list}};
+    }
+
+    return matcher;
+}
+
+reservations.listReservationsAsync = function (req, res, next) {
+    var matcher = buildStatusGridFilter(req);
+
+    async.waterfall([
+        function (callback) {
+            Reservation.find(matcher, callback);
+        }
+    ], function (err, reservation) {
         if (err) return next(err);
 
-        res.json({ // TODO util!
+        res.json({
             success: true,
             total: reservation.length,
             records: reservation
@@ -58,9 +77,55 @@ reservations.listReservations = function (req, res, next) {
     });
 };
 
-reservations.listAvailablePlanesForUser = function (req, res, next) {
-    // todo handle failures!
+reservations.listReservations = function (req, res, next) {
+    var matcher = buildStatusGridFilter(req);
 
+    Reservation.find(matcher, function (err, reservation) {
+        if (err) return next(err);
+
+        res.json({
+            success: true,
+            total: reservation.length,
+            records: reservation
+        });
+    });
+};
+
+reservations.listAvailablePlanesForUserAsync = function (req, res, next) {
+    var userId = req.session.user._id;
+
+    async.waterfall([
+        function (callback) { // find user
+            User.findById(userId, callback);
+        },
+        function (user, callback) { // check for valid licenses
+            var i, matcher,
+                userLicenses = user.getValidLicenses(),
+                matcherList = [],
+                iLen = userLicenses.length;
+
+            for (i = 0; i < iLen; i++) {
+                matcherList.push(userLicenses[i].planetype);
+            }
+
+            matcher = {planetype: {$in: matcherList}};
+            callback(null, matcher);
+        },
+        function (matcher, callback) { // find plane for matching licenses
+            Plane.find(matcher, callback);
+        }
+    ], function (err, availablePlanes) {
+        if (err) next(err);
+
+        res.json({
+            success: true,
+            total: availablePlanes.length,
+            records: availablePlanes
+        });
+    });
+};
+
+reservations.listAvailablePlanesForUser = function (req, res, next) {
     // gather license informations
     User.findById(req.session.user._id, function (err, user) {
         if (err) next(err);
@@ -95,10 +160,12 @@ reservations.creatReservation = function (req, res, next) {
     var startDate = moment(req.body.start);
     var endDate = moment(req.body.until);
     var planeType = req.body.planetype;
+    var plane = req.body.plane;
 
     Reservation.findOne(
         {$and: [
-            {planetype: planeType},
+            //{planetype: planeType},
+            {plane: plane},
             {status: {$in: ['reserved', 'lent']}}, // TODO dynamically
             {$or: [
                 // existing startdate in new range
@@ -179,18 +246,18 @@ reservations.doWorkflowStep = function (req, res, next) {
         reservation.status = nextStep;
         reservation.save(function (err, reservation) {
             if (err) next(err);
-            if (!reservation) return next(new Error('Failed to update reservation workflow: ' + reservation));
+            if (!reservation) next(new Error('Failed to update reservation workflow: ' + reservation));
 
             res.json(200, reservation);
         });
     });
 };
 
-function isValidWorkflowStep (step) {
+function isValidWorkflowStep(step) {
     return !!WORKFLOW.status[step];
 }
 
-function isValidWorkflowTransition (currentStep, nextStep) {
+function isValidWorkflowTransition(currentStep, nextStep) {
     var currentStepConfig = WORKFLOW.status[currentStep];
 
     if (currentStepConfig.next === false) {
@@ -216,14 +283,16 @@ function isValidWorkflowTransition (currentStep, nextStep) {
  *
  * @authorization {role} [name=guest] guest Authorization additional text
  */
-reservations.routes.get('/', authorization('guest'), reservations.listReservations);
+reservations.routes.get('/', authorization('guest'), reservations.listReservationsAsync);
 
-reservations.routes.get('/planes', authorization('guest'), reservations.listAvailablePlanesForUser);
+reservations.routes.get('/planes', authorization('guest'), reservations.listAvailablePlanesForUserAsync);
 
 // TODO authorization owner ! || admin
 reservations.routes.put('/workflowstep/:id', authorization('user'), reservations.doWorkflowStep);
 
 
 reservations.routes.post('/', authorization('user'), reservations.creatReservation);
-reservations.routes.put('/', authorization('admin'), function (req, res, next) {});
-reservations.routes.delete('/', authorization('admin'), function (req, res, next) {});
+reservations.routes.put('/', authorization('admin'), function (req, res, next) {
+});
+reservations.routes.delete('/', authorization('admin'), function (req, res, next) {
+});

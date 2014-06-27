@@ -26,7 +26,7 @@ require('./config/routes')(app);
 app.listen(config.port);
 
 // todo make hübsch
-var schedule = later.parse.text('every 5 seconds');
-//var cron = later.setInterval(workflow.returnLent, schedule);
+var schedule = later.parse.text('every 30 seconds');
+var cron = later.setInterval(workflow.returnLent, schedule);
 
 console.log('up and running'); // todo instrumtalise a logging framework

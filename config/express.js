@@ -12,6 +12,7 @@ module.exports = function (app, config) {
 
     app.use(monitoring({}, config));
 
+    // TODO use winston
     app.use(morgan((config.env === 'development') ? 'dev' : 'tiny')); // log every request to the console
 
     // DO NOT USE bodyParser() - https://gist.github.com/cerebrl/6487587
