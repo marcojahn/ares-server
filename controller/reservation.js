@@ -142,7 +142,7 @@ reservations.listAvailablePlanesForUser = function (req, res, next) {
         matcher = {planetype: {$in: matcherList}};
 
         Plane.find(matcher, function (err, availablePlanes) {
-            res.json({ // TODO util!
+            res.json({
                 success: true,
                 total: availablePlanes.length,
                 records: availablePlanes
@@ -236,7 +236,6 @@ reservations.doWorkflowStep = function (req, res, next) {
         if (err) next(err);
         if (!reservation) return next(new Error('Failed to load reservation: ' + reservation));
 
-        // TODO load reservationItem and check if transition is valid
         isValidTransition = isValidWorkflowTransition(reservation.status, nextStep);
         if (isValidTransition !== true) {
             res.json(666, {success: false, reason: isValidTransition.reason});

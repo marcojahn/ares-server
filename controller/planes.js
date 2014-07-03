@@ -36,7 +36,7 @@ planes.listPlanes = function (req, res, next) {
         if (err) next(err);
 
         //res.json('200', user);
-        res.json({ // TODO util!
+        res.json({
             success: true,
             total: plane.length,
             records: plane

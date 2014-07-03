@@ -17,8 +17,7 @@ users.listUsers = function (req, res, next) {
     User.find({}, function (err, user) {
         if (err) return next(err);
 
-        //res.json('200', user);
-        res.json({ // TODO util!
+        res.json({
             success: true,
             total: user.length,
             records: user
@@ -27,7 +26,6 @@ users.listUsers = function (req, res, next) {
 };
 
 users.getUser = function (req, res, next) {
-    //res.send(200, 'get user by id: ' + req.params.id);
     var id = req.params.id;
 
     User.findById(id, function (err, user) {

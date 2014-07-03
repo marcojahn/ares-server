@@ -10,8 +10,6 @@
  * @param res
  * @param next
  */
-
-// TODO set logger ref to req object to be used here
 exports.auth = function (req, res, next) {
     if (req.originalUrl.indexOf('/anonymous') === 0) {
         console.log('auth middleware :: unsecured service');

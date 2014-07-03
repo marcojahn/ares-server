@@ -47,9 +47,8 @@ monitoring.routeList = function (req, res, next) {
     //res.send('200', 'get all the planes 3');
 
     Monitoring.distinct('url', function (err, result) {
-        // TODO
-        if (err) console.log(err);
-        if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
+        if (err) next(err);
+        if (!result) next(new Error('Failed to load distinct routes: ' + result));
 
         res.json(200, {
             success: true,
@@ -77,21 +76,20 @@ monitoring.listDataForRoute = function (req, res, next) {
     // TODO rewrite to ASYNC parallels to collect the full recordset (2 async calls find+count)
     Monitoring.find(
         {url: req.query.route},
-        null,
+        /*null,
         {
             skip: 0, // TODO params
             limit: 10, // TODO params
             sort: {
                 created: -1
             }
-        },
+        },*/
         function (err, result) {
-            // TODO
-            if (err) console.log(err);
-            if (!result) console.log(new Error('Error: ' + result));
+            if (err) next(err);
+            if (!result) next(new Error('Error: ' + result));
 
             Monitoring.count({url: req.params.route}, function (err, count) {
-                res.json(200, { // TODO pagable result set!!
+                res.json(200, {
                     success: true,
                     total: count,
                     records: result
@@ -122,9 +120,8 @@ monitoring.getAggregated = function (req, res, next) {
     Monitoring.aggregate(
         buildRouteAggregationPipeline(),
         function (err, result) {
-            // TODO
-            if (err) console.log(err);
-            if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
+            if (err) next(err);
+            if (!result) next(new Error('Failed to load distinct routes: ' + result));
 
             res.json(200, {
                 success: true,
@@ -147,9 +144,8 @@ monitoring.getAggregationByRoute = function (req, res, next) {
     Monitoring.aggregate(
         buildRouteAggregationPipeline(match),
         function (err, result) {
-            // TODO
-            if (err) console.log(err);
-            if (!result) console.log(new Error('Error: ' + result));
+            if (err) next(err);
+            if (!result) next(new Error('Error: ' + result));
 
             res.json(200, {
                 success: true,
@@ -168,9 +164,8 @@ monitoring.getAggregationByRoute = function (req, res, next) {
  */
 monitoring.purgeMonitoring = function (req, res, next) {
     Monitoring.remove({}, function (err, result) {
-        // TODO
-        if (err) console.log(err);
-        if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
+        if (err) next(err);
+        if (!result) next(new Error('Failed to purge monitoring: ' + result));
 
         res.json(200, {success: true});
     });
@@ -186,9 +181,7 @@ monitoring.deleteByRoute = function (req, res, next) {
     var match = {url: req.query.route};
 
     Monitoring.remove(match, function (err, result) {
-        // TODO
         if (err) console.log(err);
-        if (!result) console.log(new Error('Failed to load distinct routes: ' + result));
 
         res.json(200, {success: true});
     });

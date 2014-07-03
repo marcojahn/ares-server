@@ -21,7 +21,6 @@ session.routes = express.Router();
  * @param next
  */
 session.getDefault = function (req, res, next) {
-    // TODO
     res.send('400', 'METHOD NOT ALLOWED');
 };
 
@@ -53,12 +52,12 @@ session.createSession = function (req, res, next) {
         switch (reason) {
             case reasons.NOT_FOUND:
             case reasons.PASSWORD_INCORRECT:
-                res.json(401, {success: false, reason: 'invalid_credentials'}); // TODO
+                res.json(401, {success: false, reason: 'invalid_credentials'});
                 break;
             case reasons.MAX_ATTEMPTS:
                 // send email or otherwise notify user that account is
                 // temporarily locked
-                res.json(401, {success: false, reason: 'user_locked'}); // TODO
+                res.json(401, {success: false, reason: 'user_locked'});
                 break;
         }
     });

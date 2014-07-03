@@ -7,9 +7,9 @@ var later = require('later');
 var workflow = require('./util/cron/processWorkflow');
 
 
-// TODO refactor
 // bootstrap db connection
 mongoose.connect(config.db);
+
 // bootstrap models
 var models_path = __dirname + '/model';
 fs.readdirSync(models_path).forEach(function (file) {
@@ -25,8 +25,7 @@ require('./config/routes')(app);
 
 app.listen(config.port);
 
-// todo make hübsch
 var schedule = later.parse.text('every 30 seconds');
 var cron = later.setInterval(workflow.returnLent, schedule);
 
-console.log('up and running'); // todo instrumtalise a logging framework
+console.log('up and running');

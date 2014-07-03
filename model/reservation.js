@@ -20,7 +20,9 @@ var startDateMustBeGreaterThanNow = [
 var ReservationSchema = new Schema({
     plane: {type: String, required: true, index: true},
     planetype: {type: String, required: true, index: true},
-    status: {type: String, required: true, index: true, default: 'reserved'}, // TODO use config
+
+    // TODO extraxt workflow from reservation controller and defintion instead
+    status: {type: String, required: true, index: true, default: 'reserved'},
     start: {type: Date, required: true, index: true, validate: startDateMustBeGreaterThanNow},
     until: {type: Date, required: true, index: true, validate: untilDateIsBeforeStartDate},
     by: {type: String, required: true, index: true}
