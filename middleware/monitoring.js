@@ -30,11 +30,13 @@ module.exports = function (logger, options) {
             res.end = rEnd;
             res.end(chunk, encoding);
 
+            url = (req.route) ? req.baseUrl + req.route.path : req.originalUrl;
+
             // Save a few more variables that we can only get at the end
             req.kvLog.status = res.statusCode;
             req.kvLog.duration = (new Date() - req._rlStartTime);
             req.kvLog.parameter = req.params || null;
-            req.kvLog.url = req.baseUrl + req.route.path;
+            req.kvLog.url = url;
 
             if (res.statusCode !== 200) {
                 var reason = chunk;
