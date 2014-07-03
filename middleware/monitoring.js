@@ -52,7 +52,6 @@ module.exports = function (logger, options) {
             var monitoring = new Monitoring(req.kvLog);
             monitoring.save(function (err, user) {
                 // TODO winston here!
-                console.log('logged to db');
             });
         };
 
