@@ -1,11 +1,14 @@
 module.exports = function (app) {
 
     app.use(require('../middleware/authentication').auth);
-    //app.use(require('../middleware/authorization').isOwner);
 
     // default route
     app.route('/').get(function (req, res, next) {
         res.send(200, 'generic doorpage')
+    });
+
+    app.route('/anonymous').all(function (req, res, next) {
+        res.send(200, 'nice try stinky bastart');
     });
 
     // public / anonymous routes

@@ -170,8 +170,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-complexity');
     grunt.registerTask('complexityReport', ['complexity']);
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-
     grunt.registerTask('jsduck', [
         'clean:docs',
         'shell:docs',
@@ -189,6 +187,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', ['mochaTest:test']);
 
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.registerTask('build', [
         'clean:build',
         'jsduck',

@@ -22,7 +22,7 @@ exports.auth = function (req, res, next) {
             console.log('user is authenticated');
             next();
         } else {
-            res.json(666, {success: false, reason: 'not_authenticated'}); // TODO
+            res.json(666, {success: false, reason: 'not_authenticated'});
         }
     }
 };

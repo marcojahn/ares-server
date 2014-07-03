@@ -12,7 +12,7 @@ module.exports = function (app, config) {
 
     app.use(monitoring({}, config));
 
-    // TODO use winston
+    // TODO use winston (migration from express 3.x to 4.x)
     app.use(morgan((config.env === 'development') ? 'dev' : 'tiny')); // log every request to the console
 
     // DO NOT USE bodyParser() - https://gist.github.com/cerebrl/6487587
@@ -45,6 +45,6 @@ module.exports = function (app, config) {
         app.use(csurf()); // see node_modules/csurf/index.js for details
     }
 
-    // if config setCORSHeaders
+    // TODO migrate CORS from express 3.x to 4.x (setCORSHeaders)
 
 };
