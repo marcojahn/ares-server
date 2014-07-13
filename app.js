@@ -1,6 +1,6 @@
 // Monitoring
-//require('newrelic');
-/*require('nodetime').profile({
+/*require('newrelic');
+require('nodetime').profile({
     accountKey: '655ca0ab8c053925e8b4ee0ff4818d37a3836fe7',
     appName: 'ARES'
 });*/

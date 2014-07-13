@@ -1,79 +1,114 @@
-# Personal notes
-start mongod:
+# PAC Summer 2014 Project
 
+## Environment
+
+For OSX
+Install node.js (v0.10.x) and NPM (v1.4.x)
+
+    brew install node
+    
+Verify your node.js installation
+
+    node --version
+    
+    > output
+    > v0.10.26
+    
+    npm --version
+    
+    > output
+    > 1.4.4
+
+Install MongoDB (2.6.x)
+
+    brew install mongodb
+    
+Local httpd server needed for the ARES client (configuration below for Apache httpd)
+
+## Setup and run the application
+
+### Server
+Checkout [ARES server](https://github.com/marcojahn/ares-server) to your computer.
+
+Install dependencies and optional tools
+
+    // switch into your "ares-server" checkout repository and run
+    npm install
+    
+    // to use the grunt build env (not needed for just running the server)
+    npm install -g grunt-cli
+    
+Start your local mongodb
+
+    // start your local mongodb instance (e.g.)
     mongod --config /usr/local/etc/mongod.conf
 
-running jsduck with custom tags
+Start the server
 
-    clear && jsduck --builtin-classes --images docs/images --welcome docs/welcome/ares-welcome.html --tags docs/jsducktags/ --guides docs/guides.json controller/ middleware/ --output build/docs
+    // run the server
+    npm start
+    
+    // you shoud see "up and running" appearing to your console
 
-# NodeJS with ExpressJS 4.0 and Mongoose
+Initial data setup
 
-Project ARES (Airplane REservation System) is developed during PRODYNA PAC certification program and can be used as project template for upcoming projectsl.
-
-## TODOs
-- [HTTP Status codes](https://developer.yahoo.com/social/rest_api_guide/http-response-codes.html)
-
-## Used Tools and Frameworks
-
-## Setup
-Due to the [bcrypt](https://github.com/ncb000gt/node.bcrypt.js/) dependency a c/c++ compile env must be available.
-For compiling bcrypt [node-gyp](https://github.com/TooTallNate/node-gyp/) an its dependencies must be installed (good luck).
-
-# Documentation
-## Additional Links
-### node.js
-- [Exporting the right way(s)](http://bites.goodeggs.com/posts/export-this/#function)
-- [NodeJS exports vs module exports](http://www.hacksparrow.com/node-js-exports-vs-module-exports.html)
-### ExpressJS 4.0
-- [Migration form ExpressJS 3.x to 4](http://scotch.io/bar-talk/expressjs-4-0-new-features-and-upgrading-from-3-0)
-- [Alternative to ExpressJS 3.x express-resource-new](https://github.com/hyubs/express-path)
-- [Express 4.0 Route API Documentation](http://expressjs.com/4x/api.html#router)
-## Structure
-## Important Files
-
-## Security
-For security (csrf, ...) the [Helmet](https://github.com/evilpacket/helmet) library is used.
-Every HTTP method type except GET, OPTIONS, HEAD is intercepted by the middleware and a csrf token is needed.
-Every token is limited to the session.
-
-### Generating a token
-
-    GET http://localhost:8080/anonymous/session/csrftoken
+    // to be able to log into the application you need to setup and administrative user
+    
+    // connect to your local mongodb
+    mongo
+    use ares
+    
+    // insert an admin user to collection "users"
+    db.users.insert({
+        "username" : "admin",
+        "password" : "$2a$10$MRak3m7Zqk7QFHkv1QqTEuLMnU1kH.sVwZSpxbSmi3rVJU1PcD0Ni",
+        "email" : "admin@example.com",
+        "licenses" : [],
+        "usergroup" : "admin"
+    });
+    
+    // you can verify the user and your local setup using the REST interface
+    POST http://localhost:8080/anonymous/sessions
     {
-        "csrftoken":"9Hr449b9JyQyx2yGtkk3jzeZ3pbc7C2Gwlvmo="
+        "username": "admin",
+       	"password": "admin"
     }
+    
+    // the response should send the created db object from users collection.
 
-### Using the token
-- Add a HTTP header "X-CSRF-Token"
-- add a parameter "_csrf" to either req.body or req.query
+Changing the base configuration
 
-### Login procedure
-1) POST to localhost:8080/anonymous/session
-    {
-        "username": "xyz",
-        "password": "1234"
-    }
+Node.js port and mongodb configuration can be changed in ./config/config.js
 
-### Authentication
+### Client
+Checkout [ARES client](https://github.com/marcojahn/ares-client) to your httpd home directory
 
-### Authorization
-Authorization is handled as api middleware.
-Example:
+Your httpd server (or local virtualhost) must be configured to be used as reverse proxy for the web client.
+Here is an example configuration for Apache2 httpd
 
-    <controller>.<operation>(<String:REST>, authorize(<list>), <callback>) {});
-    users.get('/:id', authorize('role:admin owner:id permission:read'), function (req, res, next) {
+    <VirtualHost *:80>
+        DocumentRoot "/Users/mjahn/Sites/pacdev.dev"
+        ServerName pacdev.dev
+        #ServerAlias your.alias.here
+        
+        ScriptAlias /cgi-bin "/Users/mjahn/Sites/pacdev.dev/cgi-bin"
+        
+        <Directory "/Users/mjahn/Sites/pacdev.dev">
+            Options All
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+        </Directory>
+        
+        RewriteEngine On
+        RewriteRule ^/WebService/(.*) http://127.0.0.1:8080/$1 [NC,P]
+        
+        CustomLog "/Users/mjahn/Sites/pacdev.dev/logs/access_log" combined
+        ErrorLog "/Users/mjahn/Sites/pacdev.dev/logs/error_log"
+    </VirtualHost>
 
+Your ARES client installation should now be accessible using your browser (e.g. pacdev.dev).
+To login into your application use the user created above.
 
-Now every request having "/:id" parameter will be checked by isOwner method and will compare if session user id equals given parameter id.
-If not a HTTP 666 (TODO) Status is sent
-
-# External documentation
-
-## Mongoose
-
-### Use populate for "joining" models
-
-- [Populate](http://mongoosejs.com/docs/populate.html)
-- [Document populate](http://mongoosejs.com/docs/api.html#document_Document-populate)
-- [Model populate](http://mongoosejs.com/docs/api.html#model_Model.populate)
+Username: admin
+Password: admin
