@@ -112,3 +112,7 @@ To login into your application use the user created above.
 
 Username: admin
 Password: admin
+
+Changing the base configuration
+
+If you need to modify the base REST URL configuration or something else, all configuration can be found in <pacdev.dev client>/app/CONFIG.js.
